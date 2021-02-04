@@ -1,3 +1,3 @@
-Time Is Money
+# Time Is Money
 
-My little project
+My little team time management project
