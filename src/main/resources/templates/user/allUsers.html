@@ -13,7 +13,7 @@
         <tr th:each="user : ${users}">
             <td th:text="${user.login}"></td>
             <td>
-                <a th:href="@{/user/{login} (login=${user.login})}" th:text="'Profile'"></a>
+                <a th:href="@{/mission/of/{login} (login=${user.login})}" th:text="'Profile'"></a>
             </td>
             <td>
                 <a th:href="@{/mission/create/{userId} (userId=${user.id})}" th:text="'Add'"></a>

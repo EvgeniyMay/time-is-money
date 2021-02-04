@@ -31,16 +31,10 @@
                         <input type="submit" th:value="'Pass'">
                     </form>
                 </td>
-                <td>
-                    <form th:action="@{/mission/complete}" method="POST">
-                        <input type="hidden" name="missionId" th:value="${mission.id}">
-                        <input type="submit" th:value="'Complete'">
-                    </form>
-                </td>
             </tr>
         </tbody>
     </table>
-    <a th:href="@{/mission/create/{userId} (userId=${user.id})}" th:text="'Add new'"></a>
+    <a th:href="@{/mission/offer/{login} (login=${user.login})}" th:text="'Add new'"></a>
 </main>
 </body>
 </html>

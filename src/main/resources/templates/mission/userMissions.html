@@ -2,15 +2,31 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>User Missions</title>
 </head>
 <body>
-    <h2 th:text="${user.login}"></h2>
-    <ul>
-        <li th:each="mission : ${user.missions}">
-            <p th:text="${mission.activity.name}"></p>
-            <p th:text="${mission.state.getName()}"></p>
-        </li>
-    </ul>
+    <h2 th:text="'Missions of '${user.login}"></h2>
+    <table>
+        <tr>
+            <th th:text="'Name'"></th>
+            <th th:text="'State'"></th>
+            <th th:text="'Given at'"></th>
+            <th th:text="'Coplete before'"></th>
+            <th th:text="'Action'"></th>
+        </tr>
+        <tr th:each="mission : ${user.missions}">
+            <td th:text="${mission.activity.name}"></td>
+            <td th:text="${mission.state.getName()}"></td>
+            <td th:text="${mission.startTime}"></td>
+            <td th:text="${mission.endTime}"></td>
+            <td>
+                <form th:action="@{/mission/complete}" method="POST">
+                    <input type="hidden" name="missionId" th:value="${mission.id}">
+                    <input type="submit" th:value="'Complete'">
+                </form>
+            </td>
+        </tr>
+    </table>
+    <a th:href="@{/mission/create/{userId} (userId=${user.id})}" th:text="'Add'"></a>
 </body>
 </html>

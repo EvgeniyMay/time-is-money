@@ -1,10 +1,9 @@
 package com.myLearning.timeIsMoney.service;
 
 import com.myLearning.timeIsMoney.dto.MissionDTO;
-import com.myLearning.timeIsMoney.entity.Activity;
 import com.myLearning.timeIsMoney.entity.Mission;
-import com.myLearning.timeIsMoney.entity.User;
 import com.myLearning.timeIsMoney.enums.MissionState;
+import com.myLearning.timeIsMoney.enums.Role;
 import com.myLearning.timeIsMoney.repository.ActivityRepository;
 import com.myLearning.timeIsMoney.repository.MissionRepository;
 import com.myLearning.timeIsMoney.repository.UserRepository;
@@ -34,20 +33,40 @@ public class MissionService {
         return missionRepository.findAll();
     }
 
-    // TODO
-    // NO SERVICE/REFACTOR
+    //ToDo
     // Builder
-    public Mission createMission(Long userId, MissionDTO missionDTO) {
+    public Mission createMission(Long userId, MissionDTO missionDTO, Role role) {
         Mission mission = new Mission();
+
+        mission.setUser(userRepository.findById(userId).get());
+
+        mission.setActivity(activityRepository.findById(missionDTO.getActivityId()).get());
 
         mission.setStartTime(htmlDataInputToLocalDateTime(missionDTO.getStartTimeString()));
         mission.setEndTime(htmlDataInputToLocalDateTime(missionDTO.getEndTimeString()));
 
-        // NOT HERE
         mission.setState(MissionState.GIVEN);
 
         return missionRepository.save(mission);
     }
+
+    //ToDo
+    // Builder
+    public Mission offerMission(String userLogin, MissionDTO missionDTO, Role role) {
+        Mission mission = new Mission();
+
+        mission.setUser(userRepository.findByLogin(userLogin).get());
+
+        mission.setActivity(activityRepository.findById(missionDTO.getActivityId()).get());
+
+        mission.setStartTime(htmlDataInputToLocalDateTime(missionDTO.getStartTimeString()));
+        mission.setEndTime(htmlDataInputToLocalDateTime(missionDTO.getEndTimeString()));
+
+        mission.setState(MissionState.OFFERED);
+
+        return missionRepository.save(mission);
+    }
+
 
     public Mission passMission(Long missionId) {
         return changeMissionState(missionId, MissionState.PASSED);
@@ -56,8 +75,8 @@ public class MissionService {
         return changeMissionState(missionId, MissionState.COMPLETED);
     }
 
-    // TODO
-    // LOOK AT THIS
+    //ToDo
+    // Refactor
     @Transactional
     private Mission changeMissionState(Long missionId, MissionState state) {
         // THROWS EXCEPTION

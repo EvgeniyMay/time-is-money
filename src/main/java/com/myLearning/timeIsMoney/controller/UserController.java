@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/user")
 public class UserController {
 
-
     private final UserService userService;
 
     @Autowired
@@ -28,13 +27,11 @@ public class UserController {
         return "user/allUsers";
     }
 
-    // TODO
-    // IS ADMIN - ADMIN ?
     @GetMapping("/{login}")
-    @PreAuthorize("authentication.principal.username == #login || hasRole('ADMIN')")
-    public String getProfilePage(@PathVariable String login, Model model) {
+    @PreAuthorize("authentication.principal.username == #login")
+    public String getProfilePage(@PathVariable String login,
+                                 Model model) {
         model.addAttribute("user", userService.getByLogin(login));
-
 
         return "user/userProfile";
     }

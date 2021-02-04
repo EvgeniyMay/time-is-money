@@ -23,6 +23,8 @@ public class UserService {
         this.passwordEncoder = passwordEncoder;
     }
 
+    //ToDo
+    // Add Exception
     @Transactional
     public User createUser(UserDTO userDTO) {
         User user = new User();
@@ -33,14 +35,20 @@ public class UserService {
         return userRepository.save(user);
     }
 
-    // TODO
-    // DELETE THIS
-    public User getByLogin(String login) {
-        // NULL !!!!!!!!!!
-        return userRepository.findByLogin(login).orElse(null);
-    }
-
     public List<User> getAll() {
         return userRepository.findAll();
+    }
+
+    //ToDo
+    // Add Exception
+    public User getById(Long userId) {
+        // Throws
+        return userRepository.findById(userId).get();
+    }
+
+    //ToDo
+    // Add Exception
+    public User getByLogin(String login) {
+        return userRepository.findByLogin(login).get();
     }
 }

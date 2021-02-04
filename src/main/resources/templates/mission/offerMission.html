@@ -2,13 +2,11 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Create mission</title>
+    <title>Offer Mission</title>
 </head>
 <body>
-    <form action="/mission/create" method="POST" th:object="${missionForm}">
-
-        <input type="hidden" name="userId" th:value="${userId}">
-
+    <form action="/mission/offer" method="POST" th:object="${missionForm}">
+        <input type="hidden" name="userLogin" th:value="${login}">
         <ul>
             <li th:each="activity : ${activities}">
                 <label >
@@ -16,12 +14,9 @@
                 </label>
             </li>
         </ul>
-
         <input type="datetime-local" th:field="*{startTimeString}">
-
         <input type="datetime-local" th:field="*{endTimeString}">
-
-        <input type="submit" value="Create">
+        <input type="submit" th:value="'Offer'">
     </form>
 </body>
 </html>
