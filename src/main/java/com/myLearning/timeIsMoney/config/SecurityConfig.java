@@ -34,8 +34,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers("/css/**").permitAll()
                 .antMatchers("/", "/signup", "/login").permitAll()
-                //.antMatchers("/user").hasAnyAuthority(Role.USER.getAuthority(), Role.ADMIN.getAuthority())
-                //.antMatchers("/user/**").hasAuthority(Role.ADMIN.getAuthority())
                 .anyRequest().authenticated()
                     .and()
                 .formLogin()
@@ -48,10 +46,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .invalidateHttpSession(true)
                 .clearAuthentication(true)
                 .deleteCookies("JSESSIONID")
-                .logoutSuccessUrl("/login")
-                    .and()
-                .exceptionHandling()
-                .accessDeniedPage("/accessDenied");
+                .logoutSuccessUrl("/login");
     }
 
     @Override
