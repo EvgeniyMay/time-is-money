@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Users</title>
+</head>
+<body>
+<header>
+    <div th:replace="~{fragments/header :: header}"></div>
+</header>
+<main>
+    <table>
+        <tr th:each="user : ${users}">
+            <td th:text="${user.login}"></td>
+            <td>
+                <a th:href="@{/user/{login} (login=${user.login})}" th:text="'Profile'"></a>
+            </td>
+            <td>
+                <a th:href="@{/mission/create/{userId} (userId=${user.id})}" th:text="'Add'"></a>
+            </td>
+        </tr>
+    </table>
+</main>
+</body>
+</html>

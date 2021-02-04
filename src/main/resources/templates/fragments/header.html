@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<body>
+    <div th:fragment="header">
+        <div class="language">
+            <a href="?lang=en" th:text="#{switch.lang.en}"></a> |
+            <a href="?lang=ru" th:text="#{switch.lang.ru}"></a> |
+            <a href="?lang=ua" th:text="#{switch.lang.ua}"></a>
+        </div>
+        <hr/>
+        <div class="logo">
+            <h2>Time Is Money</h2>
+        </div>
+        <hr/>
+        <div class="navigation">
+            <nav>
+                <a th:href="@{/}" th:text="#{nav.main}"></a>
+               <span sec:authorize="hasAuthority('ADMIN')">
+                    | <a th:href="@{/activity}" th:text="Activities"></a>
+                </span>
+               <span sec:authorize="hasAuthority('ADMIN')">
+                    | <a th:href="@{/user}" th:text="Users"></a>
+                </span>
+                <span sec:authorize="isAuthenticated()">
+                    | <a th:href="@{/mission}" th:text="Missions"></a>
+                </span>
+            </nav>
+        </div>
+        <div class="account">
+            <span sec:authorize="isAuthenticated()">
+                <a th:href="@{/logout}" th:text="#{nav.logout}"></a>
+                <a th:href="@{/user/{login} (login=${#authentication.name})}" th:text="Profile"></a>
+            </span>
+            <span sec:authorize="!isAuthenticated()">
+                <a th:href="@{/login}" th:text="#{nav.login}"></a>
+                <a th:href="@{/signup}" th:text="#{nav.signup}"></a>
+            </span>
+        </div>
+    </div>
+</body>
+</html>

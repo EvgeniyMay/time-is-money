@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Missions</title>
+</head>
+<body>
+    <header>
+        <div th:replace="~{fragments/header :: header}"></div>
+    </header>
+    <main>
+        <table>
+            <tr>
+                <th th:text="'Activity'"></th>
+                <th th:text="'User'"></th>
+                <th th:text="'State'"></th>
+                <th th:text="'Start time'"></th>
+                <th th:text="'End time'"></th>
+            </tr>
+            <tr th:each="mission : ${missions}">
+                <td th:text="${mission.activity.name}"></td>
+                <td th:text="${mission.user.login}"></td>
+                <td th:text="${mission.state.getName()}"></td>
+                <td th:text="${mission.startTime}"></td>
+                <td th:text="${mission.endTime}"></td>
+            </tr>
+        </table>
+    </main>
+</body>
+</html>

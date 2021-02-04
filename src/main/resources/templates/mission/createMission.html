@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+    <form action="/mission/create" method="POST" th:object="${missionForm}">
+
+        <input type="hidden" name="userId" th:value="${userId}">
+
+        <ul>
+            <li th:each="activity : ${activities}">
+                <label >
+                    <input type="radio" th:field="*{activityId}" th:value="${activity.id}" th:text="${activity.name}">
+                </label>
+            </li>
+        </ul>
+
+        <input type="datetime-local" th:field="*{startTimeString}">
+
+        <input type="datetime-local" th:field="*{endTimeString}">
+
+        <input type="submit" value="Create">
+    </form>
+</body>
+</html>

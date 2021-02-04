@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Profile</title>
+</head>
+<body>
+<header>
+    <div th:replace="~{fragments/header :: header}"></div>
+</header>
+<main>
+    <h2 th:text="${user.login}"></h2>
+    <table>
+        <thead>Missions</thead>
+        <tbody>
+            <tr>
+                <th th:text="'Activity'"></th>
+                <th th:text="'Status'"></th>
+                <th th:text="'Given at'"></th>
+                <th th:text="'Coplete before'"></th>
+            </tr>
+            <tr th:each="mission: ${user.missions}" th:if="${!mission.state.name.equals('Completed')}">
+                <td th:text="${mission.activity.name}"></td>
+                <td th:text="${mission.state.getName()}"></td>
+                <td th:text="${mission.startTime}"></td>
+                <td th:text="${mission.endTime}"></td>
+
+                <td>
+                    <form th:action="@{/mission/pass}" method="POST">
+                        <input type="hidden" name="missionId" th:value="${mission.id}">
+                        <input type="submit" th:value="'Pass'">
+                    </form>
+                </td>
+                <td>
+                    <form th:action="@{/mission/complete}" method="POST">
+                        <input type="hidden" name="missionId" th:value="${mission.id}">
+                        <input type="submit" th:value="'Complete'">
+                    </form>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <a th:href="@{/mission/create/{userId} (userId=${user.id})}" th:text="'Add new'"></a>
+</main>
+</body>
+</html>

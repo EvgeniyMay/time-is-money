@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit</title>
+</head>
+<body>
+<header>
+    <div th:replace="~{fragments/header :: header}"></div>
+</header>
+<main>
+    <form th:action="@{/activity/edit}" th:object="${activity}" method="POST">
+        <input type="number" th:field="*{id}" th:value="${activity.id}" hidden>
+
+        <label for="name" th:text="'Name: '"></label>
+        <input type="text" th:field="*{name}" th:value="${activity.name}" id="name" />
+
+        <label for="description" th:text="'Desciption: '"></label>
+        <input type="text" th:field="*{description}" th:value="${activity.description}" id="description" />
+
+        <input type="submit" th:value="Update">
+    </form>
+</main>
+</body>
+</html>

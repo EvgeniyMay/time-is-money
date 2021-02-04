@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Create</title>
+</head>
+<body>
+<header>
+    <div th:replace="~{fragments/header :: header}"></div>
+</header>
+<main>
+    <form th:action="@{/activity/add}" th:object="${activityForm}" method="POST">
+        <label for="name" th:text="'Name: '"></label>
+        <input type="text" th:field="*{name}" id="name" />
+
+        <label for="description" th:text="'Desciption: '"></label>
+        <input type="text" th:field="*{description}" id="description" />
+
+        <input type="submit" th:value="Add">
+    </form>
+</main>
+</body>
+</html>

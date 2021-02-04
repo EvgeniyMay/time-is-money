@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <h2 th:text="${user.login}"></h2>
+    <ul>
+        <li th:each="mission : ${user.missions}">
+            <p th:text="${mission.activity.name}"></p>
+            <p th:text="${mission.state.getName()}"></p>
+        </li>
+    </ul>
+</body>
+</html>

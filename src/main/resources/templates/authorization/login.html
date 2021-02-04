@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Login</title>
+</head>
+<body>
+    <header>
+        <div th:replace="~{fragments/header :: header}"></div>
+    </header>
+    <h2 th:text="#{login.title}"></h2>
+    <div th:if="${param.error}">
+        <p th:text="#{login.input.error.data-password}"></p>
+    </div>
+
+    <form action="/login" method="POST" >
+        <table>
+            <tr>
+                <td><label for="username" th:text="#{login.login}"></label></td>
+                <td><input type="text" name="username" required id="username"></td>
+            </tr>
+            <tr>
+                <td><label for="password" th:text="#{login.password}"></label></td>
+                <td><input type="password" name="password" required id="password"></td>
+            </tr>
+        </table>
+        <input type="submit" th:value="#{nav.login}">
+    </form>
+</body>
+</html>
