@@ -8,9 +8,9 @@
     <header>
         <div th:replace="~{fragments/header :: header}"></div>
     </header>
-    <h2>Are you sure you want to log out ?</h2>
+    <h2 th:text="#{logout.message}"></h2>
     <form action="/logout" method="POST" >
-        <input type="submit" value="Log out">
+        <input type="submit" th:value="#{nav.logout}">
     </form>
 </body>
 </html>

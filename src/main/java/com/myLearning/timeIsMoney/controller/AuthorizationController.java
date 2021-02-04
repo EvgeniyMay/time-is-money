@@ -1,7 +1,8 @@
 package com.myLearning.timeIsMoney.controller;
 
 import com.myLearning.timeIsMoney.dto.UserDTO;
-import com.myLearning.timeIsMoney.entity.User;
+import com.myLearning.timeIsMoney.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -14,6 +15,13 @@ import javax.validation.Valid;
 
 @Controller
 public class AuthorizationController {
+
+    private final UserService userService;
+
+    @Autowired
+    public AuthorizationController(UserService userService) {
+        this.userService = userService;
+    }
 
     @GetMapping("/signup")
     public String getSignupPage(Model model) {
@@ -30,7 +38,7 @@ public class AuthorizationController {
             return "authorization/signup";
         }
 
-        //userService.signupNewUser(userForm);
+        userService.createUser(userForm);
 
         return "redirect:/login";
     }
@@ -52,11 +60,6 @@ public class AuthorizationController {
     @GetMapping("/logout")
     public String getLogoutPage() {
         return "authorization/logout";
-    }
-
-    @GetMapping("/accessDenied")
-    public String getAccessDeniedPage() {
-        return "authorization/accessDenied";
     }
 
 }

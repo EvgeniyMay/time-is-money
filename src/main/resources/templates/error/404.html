@@ -6,7 +6,7 @@
 </head>
 <body>
     <h1 th:text="'404'"></h1>
-    <h2 th:text="'Page is not found'"></h2>
-    <a th:href="@{/}" th:text="'Go to main'"></a>
+    <h2 th:text="#{error.404}"></h2>
+    <a th:href="@{/}" th:text="#{nav.back_to_main}"></a>
 </body>
 </html>

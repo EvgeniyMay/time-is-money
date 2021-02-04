@@ -8,27 +8,26 @@
     <header>
         <div th:replace="~{fragments/header :: header}"></div>
     </header>
-    <h2 th:text="#{nav.signup}"></h2>
     <form action="/signup" th:object="${userForm}" method="POST">
         <table>
             <tr>
-                <td><label for="login" th:text="#{login.login}"></label></td>
+                <td><label for="login" th:text="#{field.login}"></label></td>
                 <td><input type="text" th:field="*{login}" id="login" required ></td>
             </tr>
             <tr th:if="${#fields.hasErrors('login')}">
-                <td th:text="#{login.input.error.login-size}" colspan="2" ></td>
+                <td th:text="#{input.error.login}" colspan="2" ></td>
             </tr>
 
             <tr>
-                <td><label for="password"  th:text="#{login.password}"></label></td>
+                <td><label for="password"  th:text="#{field.password}"></label></td>
                 <td><input type="password" th:field="*{password}" id="password" required></td>
             </tr>
             <tr th:if="${#fields.hasErrors('password')}">
-                <td th:text="#{login.input.error.password-size}" colspan="2" ></td>
+                <td th:text="#{input.error.password}" colspan="2" ></td>
             </tr>
 
         </table>
-        <input type="submit" th:value="#{nav.signup}">
+        <input type="submit" th:value="#{signup.button}">
     </form>
 </body>
 </html>
