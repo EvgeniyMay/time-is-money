@@ -1,8 +1,16 @@
 package com.myLearning.timeIsMoney.entity;
 
+import lombok.*;
+
 import javax.persistence.*;
 import java.util.List;
 
+
+@Getter
+@Setter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
 public class Activity {
 
@@ -18,32 +26,4 @@ public class Activity {
     @OneToMany(mappedBy = "activity")
     private List<Mission> missions;
 
-
-    public Long getId() {
-        return id;
-    }
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public List<Mission> getMissions() {
-        return missions;
-    }
-    public void setMissions(List<Mission> missions) {
-        this.missions = missions;
-    }
 }

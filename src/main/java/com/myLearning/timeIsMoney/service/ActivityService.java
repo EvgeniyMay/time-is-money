@@ -29,12 +29,11 @@ public class ActivityService {
     }
 
     //ToDo
-    // Builder
     public boolean create(ActivityDTO activityDTO) {
-        Activity activity = new Activity();
-        activity.setName(activityDTO.getName());
-        activity.setDescription(activityDTO.getDescription());
-
+        Activity activity = Activity.builder()
+                .name(activityDTO.getName())
+                .description(activityDTO.getDescription())
+                .build();
         try {
             activityRepository.save(activity);
             //ToDo
