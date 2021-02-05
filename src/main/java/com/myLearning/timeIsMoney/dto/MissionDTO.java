@@ -1,7 +1,5 @@
 package com.myLearning.timeIsMoney.dto;
 
-import java.time.LocalDateTime;
-
 public class MissionDTO {
 
     private Long userId;

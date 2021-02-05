@@ -10,12 +10,16 @@
 </header>
 <main>
     <form th:action="@{/activity/add}" th:object="${activityForm}" method="POST">
-        <label for="name" th:text="'Name: '"></label>
-        <input type="text" th:field="*{name}" id="name" />
-
-        <label for="description" th:text="'Desciption: '"></label>
-        <input type="text" th:field="*{description}" id="description" />
-
+        <table>
+            <tr>
+                <td><label for="name" th:text="'Name: '"></label></td>
+                <td><input type="text" th:field="*{name}" id="name" /></td>
+            </tr>
+            <tr>
+                <td><label for="description" th:text="'Desciption: '"></label></td>
+                <td><input type="text" th:field="*{description}" id="description" /></td>
+            </tr>
+        </table>
         <input type="submit" th:value="Add">
     </form>
 </main>

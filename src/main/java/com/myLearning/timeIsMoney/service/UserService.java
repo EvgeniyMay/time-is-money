@@ -6,13 +6,9 @@ import com.myLearning.timeIsMoney.enums.Role;
 import com.myLearning.timeIsMoney.exception.LoginAlreadyExistException;
 import com.myLearning.timeIsMoney.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.i18n.LocaleContextHolder;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import javax.transaction.Transactional;
-import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -28,9 +24,8 @@ public class UserService {
     }
 
     //ToDo
-    // Add Exception
-    @Transactional
-    public User createUser(UserDTO userDTO) {
+    // Builder
+    public boolean create(UserDTO userDTO) {
         User user = new User();
         user.setLogin(userDTO.getLogin());
         user.setPassword(passwordEncoder.encode(userDTO.getPassword()));
@@ -40,14 +35,13 @@ public class UserService {
             userRepository.save(user);
             //ToDo
             // Log
+            return true;
         } catch (Exception e) {
             //ToDo
             // Log
             // Localize error message
             throw new LoginAlreadyExistException("Login already exists");
         }
-
-        return userRepository.save(user);
     }
 
     public List<User> getAll() {
@@ -57,7 +51,6 @@ public class UserService {
     //ToDo
     // Add Exception
     public User getById(Long userId) {
-        // Throws
         return userRepository.findById(userId).get();
     }
 

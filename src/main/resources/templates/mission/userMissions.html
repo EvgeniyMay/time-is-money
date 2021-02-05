@@ -2,10 +2,10 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>User Missions</title>
+    <title th:text="${user.login}"></title>
 </head>
 <body>
-    <h2 th:text="'Missions of '${user.login}"></h2>
+    <h2 th:text="'Missions of ' + ${user.login}"></h2>
     <table>
         <tr>
             <th th:text="'Name'"></th>

@@ -2,6 +2,8 @@ package com.myLearning.timeIsMoney.service;
 
 import com.myLearning.timeIsMoney.dto.ActivityDTO;
 import com.myLearning.timeIsMoney.entity.Activity;
+import com.myLearning.timeIsMoney.exception.ActivityAlreadyExistException;
+import com.myLearning.timeIsMoney.exception.ObjectNotFoundException;
 import com.myLearning.timeIsMoney.repository.ActivityRepository;
 import com.myLearning.timeIsMoney.repository.MissionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,39 +24,61 @@ public class ActivityService {
         this.missionRepository = missionRepository;
     }
 
-    public Activity create(ActivityDTO activityDTO) {
-        // Builder
+    public List<Activity> getAll() {
+        return activityRepository.findAll();
+    }
+
+    //ToDo
+    // Builder
+    public boolean create(ActivityDTO activityDTO) {
         Activity activity = new Activity();
         activity.setName(activityDTO.getName());
         activity.setDescription(activityDTO.getDescription());
 
-        return activityRepository.save(activity);
-    }
-
-    @Transactional
-    public Activity update(ActivityDTO activityDTO) {
-        // ADD THROWS
-        Activity activity = activityRepository.findById(activityDTO.getId()).get();
-        activity.setName(activityDTO.getName());
-        activity.setDescription(activityDTO.getDescription());
-
-        return activityRepository.save(activity);
+        try {
+            activityRepository.save(activity);
+            //ToDo
+            // Log
+            return true;
+        } catch (Exception e) {
+            //ToDo
+            // Log
+            // Localize error message
+            throw new ActivityAlreadyExistException("Activity already exists");
+        }
     }
 
     public Activity getById(Long id) {
-        // ADD THROWS
-        return activityRepository.findById(id).get();
+        //ToDo
+        // Localize error message
+        return activityRepository.findById(id).orElseThrow(()->
+                new ObjectNotFoundException("Activity not found"));
     }
 
-    /// void ???
+    
+    public boolean update(ActivityDTO activityDTO) {
+        Activity activity = activityRepository.findById(activityDTO.getId()).orElseThrow(() ->
+                new ObjectNotFoundException("Activity not found"));
+
+        activity.setName(activityDTO.getName());
+        activity.setDescription(activityDTO.getDescription());
+
+        try {
+            activityRepository.save(activity);
+            //ToDo
+            // Log
+            return true;
+        } catch (Exception e) {
+            //ToDo
+            // Log
+            // Localize error message
+            throw new ActivityAlreadyExistException("Activity already exists");
+        }
+    }
+
     @Transactional
     public void deleteById(Long activityId) {
-        // ADD THROWS
         missionRepository.deleteAllByActivityId(activityId);
         activityRepository.deleteById(activityId);
-    }
-
-    public List<Activity> getAll() {
-        return activityRepository.findAll();
     }
 }

@@ -1,6 +1,8 @@
 package com.myLearning.timeIsMoney.controller;
 
 import com.myLearning.timeIsMoney.dto.ActivityDTO;
+import com.myLearning.timeIsMoney.exception.ActivityAlreadyExistException;
+import com.myLearning.timeIsMoney.exception.ObjectNotFoundException;
 import com.myLearning.timeIsMoney.service.ActivityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -21,10 +23,10 @@ public class ActivityController {
     @GetMapping
     public String getAllActivitiesPage(Model model) {
         model.addAttribute("activities", activityService.getAll());
-        model.addAttribute("activityForm", new ActivityDTO());
 
         return "activity/allActivities";
     }
+
 
     @GetMapping("/add")
     public String getCreateActivityPage(Model model) {
@@ -40,6 +42,7 @@ public class ActivityController {
         return "redirect:/activity";
     }
 
+
     @GetMapping("/edit/{id}")
     public String getEditActivityPage(Model model, @PathVariable Long id) {
         model.addAttribute("activity", activityService.getById(id));
@@ -54,6 +57,7 @@ public class ActivityController {
         return "redirect:/activity";
     }
 
+
     @GetMapping("/delete/{activityId}")
     public String getDeleteActivityPage(Model model, @PathVariable Long activityId) {
         model.addAttribute("activity", activityService.getById(activityId));
@@ -63,9 +67,25 @@ public class ActivityController {
 
     @PostMapping("/delete")
     public String deleteActivity(@RequestParam Long activityId) {
-        System.out.println(activityId);
         activityService.deleteById(activityId);
 
         return "redirect:/activity";
+    }
+
+
+    @ExceptionHandler(ObjectNotFoundException.class)
+    public String handleObjectNotFoundException(ObjectNotFoundException e) {
+        //ToDo
+        // Log
+        return "error/404";
+    }
+
+    @ExceptionHandler(ActivityAlreadyExistException.class)
+    public String handleRuntimeException(ActivityAlreadyExistException e,
+                                         Model model) {
+        model.addAttribute("activities", activityService.getAll());
+        model.addAttribute("activityExistMessage", e.getMessage());
+
+        return "activity/allActivities";
     }
 }

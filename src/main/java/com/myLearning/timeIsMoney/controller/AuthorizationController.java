@@ -35,7 +35,7 @@ public class AuthorizationController {
             return "authorization/signup";
         }
 
-        userService.createUser(userForm);
+        userService.create(userForm);
 
         return "redirect:/login";
     }

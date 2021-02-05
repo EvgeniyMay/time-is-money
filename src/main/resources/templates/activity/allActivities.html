@@ -9,6 +9,9 @@
     <div th:replace="~{fragments/header :: header}"></div>
 </header>
 <main>
+    <div th:if="${activityExistMessage}">
+        <span th:text="${activityExistMessage}" colspan="2"></span>
+    </div>
     <table>
         <tr>
             <th>Name</th>
