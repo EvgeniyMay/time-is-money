@@ -1,13 +1,14 @@
 package com.myLearning.timeIsMoney.dto;
 
 import javax.validation.constraints.Size;
+import java.io.Serializable;
 
-public class UserDTO {
+public class UserDTO implements Serializable {
 
-    @Size(min=4, max = 20, message = "#{login.input.error.login-size}")
+    @Size(min=4, max = 20, message = "{input.error.login.size}")
     private String login;
 
-    @Size(min=6, max = 20, message = "{login.input.error.password.size}")
+    @Size(min=8, max = 20, message = "{input.error.password.size}")
     private String password;
 
     public UserDTO() {
