@@ -1,15 +1,13 @@
 package com.myLearning.timeIsMoney.controller;
 
 import com.myLearning.timeIsMoney.dto.UserDTO;
+import com.myLearning.timeIsMoney.exception.LoginAlreadyExistException;
 import com.myLearning.timeIsMoney.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
@@ -33,7 +31,6 @@ public class AuthorizationController {
     @PostMapping("/signup")
     public String signupUser(@ModelAttribute("userForm") @Valid UserDTO userForm,
                              BindingResult bindingResult) {
-
         if(bindingResult.hasErrors()) {
             return "authorization/signup";
         }
@@ -43,8 +40,10 @@ public class AuthorizationController {
         return "redirect:/login";
     }
 
+
     @GetMapping("/login")
-    public String getLoginPage(@RequestParam(name = "error", defaultValue = "false") boolean loginError, Model model) {
+    public String getLoginPage(@RequestParam(name = "error", defaultValue = "false") boolean loginError,
+                               Model model) {
         if(loginError) {
             model.addAttribute("errorMessage", "{login.input.error.data-password}");
         }
@@ -62,4 +61,13 @@ public class AuthorizationController {
         return "authorization/logout";
     }
 
+
+    @ExceptionHandler(LoginAlreadyExistException.class)
+    public String handleRuntimeException(LoginAlreadyExistException e,
+                                         Model model) {
+        model.addAttribute("userForm", new UserDTO());
+        model.addAttribute("loginExistMessage", e.getMessage());
+
+        return "authorization/signup";
+    }
 }

@@ -17,6 +17,9 @@
             <tr th:if="${#fields.hasErrors('login')}">
                 <td th:errors="*{login}" colspan="2" ></td>
             </tr>
+            <tr th:if="${loginExistMessage}">
+                <td th:text="${loginExistMessage}" colspan="2" ></td>
+            </tr>
 
             <tr>
                 <td><label for="password"  th:text="#{field.password}"></label></td>
@@ -25,7 +28,6 @@
             <tr th:if="${#fields.hasErrors('password')}">
                 <td th:errors="*{password}" colspan="2" ></td>
             </tr>
-
 
         </table>
         <input type="submit" th:value="#{signup.button}">

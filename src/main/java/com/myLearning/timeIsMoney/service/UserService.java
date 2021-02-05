@@ -3,12 +3,16 @@ package com.myLearning.timeIsMoney.service;
 import com.myLearning.timeIsMoney.dto.UserDTO;
 import com.myLearning.timeIsMoney.entity.User;
 import com.myLearning.timeIsMoney.enums.Role;
+import com.myLearning.timeIsMoney.exception.LoginAlreadyExistException;
 import com.myLearning.timeIsMoney.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.i18n.LocaleContextHolder;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -31,6 +35,17 @@ public class UserService {
         user.setLogin(userDTO.getLogin());
         user.setPassword(passwordEncoder.encode(userDTO.getPassword()));
         user.setRole(Role.USER);
+
+        try {
+            userRepository.save(user);
+            //ToDo
+            // Log
+        } catch (Exception e) {
+            //ToDo
+            // Log
+            // Localize error message
+            throw new LoginAlreadyExistException("Login already exists");
+        }
 
         return userRepository.save(user);
     }
