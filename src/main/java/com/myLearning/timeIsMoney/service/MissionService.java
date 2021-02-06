@@ -3,7 +3,8 @@ package com.myLearning.timeIsMoney.service;
 import com.myLearning.timeIsMoney.dto.MissionDTO;
 import com.myLearning.timeIsMoney.entity.Mission;
 import com.myLearning.timeIsMoney.enums.MissionState;
-import com.myLearning.timeIsMoney.enums.Role;
+import com.myLearning.timeIsMoney.exception.DurationLessThanZeroException;
+import com.myLearning.timeIsMoney.exception.ObjectNotFoundException;
 import com.myLearning.timeIsMoney.repository.ActivityRepository;
 import com.myLearning.timeIsMoney.repository.MissionRepository;
 import com.myLearning.timeIsMoney.repository.UserRepository;
@@ -33,62 +34,81 @@ public class MissionService {
         return missionRepository.findAll();
     }
 
-    //ToDo
-    // Builder
-    public Mission createMission(Long userId, MissionDTO missionDTO, Role role) {
-        Mission mission = new Mission();
 
-        mission.setUser(userRepository.findById(userId).get());
+    @Transactional
+    public boolean createMission(Long userId, MissionDTO missionDTO) {
+        validateDuration(missionDTO);
 
-        mission.setActivity(activityRepository.findById(missionDTO.getActivityId()).get());
-
-        mission.setStartTime(htmlDataInputToLocalDateTime(missionDTO.getStartTimeString()));
-        mission.setEndTime(htmlDataInputToLocalDateTime(missionDTO.getEndTimeString()));
-
-        mission.setState(MissionState.GIVEN);
-
-        return missionRepository.save(mission);
+        Mission mission = Mission.builder()
+                .user(userRepository.findById(userId).orElseThrow(ObjectNotFoundException::new))
+                .activity(activityRepository.findById(missionDTO.getActivityId()).orElseThrow(ObjectNotFoundException::new))
+                .startTime(htmlDate2LocalDateTime(missionDTO.getStartTimeString()))
+                .endTime(htmlDate2LocalDateTime(missionDTO.getEndTimeString()))
+                .state(MissionState.GIVEN)
+                .build();
+        try {
+            missionRepository.save(mission);
+            //ToDO
+            // Log
+            return true;
+        } catch (Exception e) {
+            throw new RuntimeException();
+        }
     }
 
-    //ToDo
-    // Builder
-    public Mission offerMission(String userLogin, MissionDTO missionDTO, Role role) {
-        Mission mission = new Mission();
+    public boolean offerMission(String userLogin, MissionDTO missionDTO) {
+        validateDuration(missionDTO);
 
-        mission.setUser(userRepository.findByLogin(userLogin).get());
-
-        mission.setActivity(activityRepository.findById(missionDTO.getActivityId()).get());
-
-        mission.setStartTime(htmlDataInputToLocalDateTime(missionDTO.getStartTimeString()));
-        mission.setEndTime(htmlDataInputToLocalDateTime(missionDTO.getEndTimeString()));
-
-        mission.setState(MissionState.OFFERED);
-
-        return missionRepository.save(mission);
+        Mission mission = Mission.builder()
+                .user(userRepository.findByLogin(userLogin).orElseThrow(ObjectNotFoundException::new))
+                .activity(activityRepository.findById(missionDTO.getActivityId()).orElseThrow(ObjectNotFoundException::new))
+                .startTime(htmlDate2LocalDateTime(missionDTO.getStartTimeString()))
+                .endTime(htmlDate2LocalDateTime(missionDTO.getEndTimeString()))
+                .state(MissionState.OFFERED)
+                .build();
+        try {
+            missionRepository.save(mission);
+            //ToDO
+            // Log
+            return true;
+        } catch (Exception e) {
+            throw new RuntimeException();
+        }
     }
 
 
-    public Mission passMission(Long missionId) {
+    public boolean passMission(Long missionId) {
         return changeMissionState(missionId, MissionState.PASSED);
     }
-    public Mission completeMission(Long missionId) {
+    public boolean completeMission(Long missionId) {
         return changeMissionState(missionId, MissionState.COMPLETED);
     }
 
-    //ToDo
-    // Refactor
     @Transactional
-    private Mission changeMissionState(Long missionId, MissionState state) {
-        // THROWS EXCEPTION
-        Mission mission = missionRepository.findById(missionId).get();
+    public boolean changeMissionState(Long missionId, MissionState state) {
+        Mission mission = missionRepository.findById(missionId)
+                .orElseThrow(ObjectNotFoundException::new);
         mission.setState(state);
 
-        return missionRepository.save(mission);
+        try {
+            missionRepository.save(mission);
+            //ToDO
+            // Log
+            return true;
+        } catch (Exception e) {
+            throw new RuntimeException();
+        }
     }
 
-    private LocalDateTime htmlDataInputToLocalDateTime(String htmlInputData) {
+    private LocalDateTime htmlDate2LocalDateTime(String htmlInputData) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm");
 
         return LocalDateTime.parse(htmlInputData, formatter);
+    }
+
+    private void validateDuration(MissionDTO missionDTO){
+        if(missionDTO.getStartTimeString().compareTo(missionDTO.getEndTimeString()) > 0) {
+            throw new DurationLessThanZeroException();
+        }
     }
 }

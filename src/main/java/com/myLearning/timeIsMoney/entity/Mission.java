@@ -1,11 +1,17 @@
 package com.myLearning.timeIsMoney.entity;
 
 import com.myLearning.timeIsMoney.enums.MissionState;
+import lombok.*;
 
 import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
+@Getter
+@Setter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
 public class Mission implements Serializable {
 
@@ -28,46 +34,4 @@ public class Mission implements Serializable {
 
     private LocalDateTime endTime;
 
-
-    public Long getId() {
-        return id;
-    }
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public User getUser() {
-        return user;
-    }
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-    public Activity getActivity() {
-        return activity;
-    }
-    public void setActivity(Activity activity) {
-        this.activity = activity;
-    }
-
-    public MissionState getState() {
-        return state;
-    }
-    public void setState(MissionState state) {
-        this.state = state;
-    }
-
-    public LocalDateTime getStartTime() {
-        return startTime;
-    }
-    public void setStartTime(LocalDateTime startTime) {
-        this.startTime = startTime;
-    }
-
-    public LocalDateTime getEndTime() {
-        return endTime;
-    }
-    public void setEndTime(LocalDateTime endTime) {
-        this.endTime = endTime;
-    }
 }

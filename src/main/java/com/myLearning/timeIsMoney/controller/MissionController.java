@@ -1,7 +1,7 @@
 package com.myLearning.timeIsMoney.controller;
 
 import com.myLearning.timeIsMoney.dto.MissionDTO;
-import com.myLearning.timeIsMoney.enums.Role;
+import com.myLearning.timeIsMoney.exception.DurationLessThanZeroException;
 import com.myLearning.timeIsMoney.service.ActivityService;
 import com.myLearning.timeIsMoney.service.MissionService;
 import com.myLearning.timeIsMoney.service.UserService;
@@ -9,7 +9,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
 
 @Controller
 @RequestMapping("/mission")
@@ -41,6 +44,7 @@ public class MissionController {
         return "/mission/userMissions";
     }
 
+
     @PostMapping("/pass")
     public String passMission(@RequestParam Long missionId){
         missionService.passMission(missionId);
@@ -55,6 +59,7 @@ public class MissionController {
         return "redirect:/mission";
     }
 
+
     @GetMapping("/create/{userId}")
     public String getCreateMissionPage(@PathVariable Long userId,
                                        Model model) {
@@ -66,12 +71,30 @@ public class MissionController {
     }
 
     @PostMapping("/create")
-    public String createMission(@RequestParam Long userId,
-                                @ModelAttribute MissionDTO missionDTO) {
-        missionService.createMission(userId, missionDTO, Role.ADMIN);
+    public String createMission(@ModelAttribute("missionForm") @Valid MissionDTO missionDTO,
+                                BindingResult bindingResult,
+                                @RequestParam Long userId,
+                                Model model) {
+        model.addAttribute("userId", userId);
+        model.addAttribute("activities", activityService.getAll());
 
+        if(bindingResult.hasErrors()) {
+            return "mission/createMission";
+        }
+
+        try {
+            missionService.createMission(userId, missionDTO);
+        } catch (DurationLessThanZeroException e) {
+            model.addAttribute("missionForm", new MissionDTO());
+            //ToDo
+            // Localize
+            model.addAttribute("durationLessThanZero", "Duration can't be less than zero");
+
+            return "mission/createMission";
+        }
         return "redirect:/user";
     }
+
 
     @GetMapping("/offer/{login}")
     @PreAuthorize("authentication.principal.username == #login")
@@ -86,8 +109,16 @@ public class MissionController {
     @PostMapping("/offer")
     public String offerMission(@RequestParam String userLogin,
                                @ModelAttribute MissionDTO missionDTO) {
-        missionService.offerMission(userLogin, missionDTO, Role.USER);
+        missionService.offerMission(userLogin, missionDTO);
 
         return "redirect:/user";
+    }
+
+
+    @ExceptionHandler(RuntimeException.class)
+    public String handleObjectNotFoundException(RuntimeException e) {
+        //ToDo
+        // Log
+        return "error/404";
     }
 }

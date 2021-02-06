@@ -26,11 +26,12 @@ public class UserService {
     //ToDo
     // Builder
     public boolean create(UserDTO userDTO) {
-        User user = new User();
-        user.setLogin(userDTO.getLogin());
-        user.setPassword(passwordEncoder.encode(userDTO.getPassword()));
-        user.setRole(Role.USER);
 
+        User user = User.builder()
+                .login(userDTO.getLogin())
+                .password(passwordEncoder.encode(userDTO.getPassword()))
+                .role(Role.USER)
+                .build();
         try {
             userRepository.save(user);
             //ToDo

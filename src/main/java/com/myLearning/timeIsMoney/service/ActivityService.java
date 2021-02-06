@@ -28,7 +28,6 @@ public class ActivityService {
         return activityRepository.findAll();
     }
 
-    //ToDo
     public boolean create(ActivityDTO activityDTO) {
         Activity activity = Activity.builder()
                 .name(activityDTO.getName())

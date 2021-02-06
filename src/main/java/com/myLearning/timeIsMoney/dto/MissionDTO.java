@@ -1,39 +1,22 @@
 package com.myLearning.timeIsMoney.dto;
 
+import lombok.Getter;
+import lombok.Setter;
+
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+
+@Getter
+@Setter
 public class MissionDTO {
 
-    private Long userId;
+//    private Long userId;
+
+    @NotNull(message = "{input.error.empty_field}")
     private Long activityId;
 
+    @NotEmpty(message = "{input.error.empty_field}")
     private String startTimeString;
+    @NotEmpty(message = "{input.error.empty_field}")
     private String endTimeString;
-
-
-    public Long getUserId() {
-        return userId;
-    }
-    public void setUserId(Long userId) {
-        this.userId = userId;
-    }
-
-    public Long getActivityId() {
-        return activityId;
-    }
-    public void setActivityId(Long activityId) {
-        this.activityId = activityId;
-    }
-
-    public String getStartTimeString() {
-        return startTimeString;
-    }
-    public void setStartTimeString(String startTimeString) {
-        this.startTimeString = startTimeString;
-    }
-
-    public String getEndTimeString() {
-        return endTimeString;
-    }
-    public void setEndTimeString(String endTimeString) {
-        this.endTimeString = endTimeString;
-    }
 }

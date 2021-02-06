@@ -20,7 +20,6 @@ public class Activity {
 
     @Column(unique = true)
     private String name;
-
     private String description;
 
     @OneToMany(mappedBy = "activity")

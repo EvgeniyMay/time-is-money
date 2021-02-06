@@ -5,6 +5,9 @@
     <title>Create mission</title>
 </head>
 <body>
+    <div th:if="${durationLessThanZero}">
+        <span th:text="${durationLessThanZero}"></span>
+    </div>
     <form action="/mission/create" method="POST" th:object="${missionForm}">
 
         <input type="hidden" name="userId" th:value="${userId}">
@@ -16,10 +19,20 @@
                 </label>
             </li>
         </ul>
+        <div th:if="${#fields.hasErrors('activityId')}">
+            <span th:errors="*{activityId}" ></span>
+        </div>
 
         <input type="datetime-local" th:field="*{startTimeString}">
+        <div th:if="${#fields.hasErrors('startTimeString')}">
+            <span th:errors="*{startTimeString}" ></span>
+        </div>
 
         <input type="datetime-local" th:field="*{endTimeString}">
+        <div th:if="${#fields.hasErrors('endTimeString')}">
+            <span th:errors="*{endTimeString}" ></span>
+        </div>
+
 
         <input type="submit" value="Create">
     </form>
