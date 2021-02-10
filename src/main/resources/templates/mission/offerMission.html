@@ -6,6 +6,7 @@
 </head>
 <body>
     <form action="/mission/offer" method="POST" th:object="${missionForm}">
+        <input type="hidden" name="id" th:value="${id}">
         <input type="hidden" name="userLogin" th:value="${login}">
         <ul>
             <li th:each="activity : ${activities}">

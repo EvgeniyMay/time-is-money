@@ -99,7 +99,9 @@ public class MissionController {
     @GetMapping("/offer/{login}")
     @PreAuthorize("authentication.principal.username == #login")
     public String getOfferMissionPage(@PathVariable String login,
+                                      @RequestParam Long id,
                                       Model model) {
+        model.addAttribute("id", id);
         model.addAttribute("missionForm", new MissionDTO());
         model.addAttribute("activities", activityService.getAll());
 
@@ -108,8 +110,9 @@ public class MissionController {
 
     @PostMapping("/offer")
     public String offerMission(@RequestParam String userLogin,
-                               @ModelAttribute MissionDTO missionDTO) {
-        missionService.offerMission(userLogin, missionDTO);
+                               @ModelAttribute MissionDTO missionDTO,
+                               @RequestParam Long id) {
+        missionService.offerMission(id, missionDTO);
 
         return "redirect:/user";
     }

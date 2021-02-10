@@ -1,7 +1,9 @@
 package com.myLearning.timeIsMoney.service;
 
 import com.myLearning.timeIsMoney.dto.MissionDTO;
+import com.myLearning.timeIsMoney.entity.Activity;
 import com.myLearning.timeIsMoney.entity.Mission;
+import com.myLearning.timeIsMoney.entity.User;
 import com.myLearning.timeIsMoney.enums.MissionState;
 import com.myLearning.timeIsMoney.exception.DurationLessThanZeroException;
 import com.myLearning.timeIsMoney.exception.ObjectNotFoundException;
@@ -40,8 +42,8 @@ public class MissionService {
         validateDuration(missionDTO);
 
         Mission mission = Mission.builder()
-                .user(userRepository.findById(userId).orElseThrow(ObjectNotFoundException::new))
-                .activity(activityRepository.findById(missionDTO.getActivityId()).orElseThrow(ObjectNotFoundException::new))
+                .user(User.builder().id(userId).build())
+                .activity(Activity.builder().id(missionDTO.getActivityId()).build())
                 .startTime(htmlDate2LocalDateTime(missionDTO.getStartTimeString()))
                 .endTime(htmlDate2LocalDateTime(missionDTO.getEndTimeString()))
                 .state(MissionState.GIVEN)
@@ -56,12 +58,12 @@ public class MissionService {
         }
     }
 
-    public boolean offerMission(String userLogin, MissionDTO missionDTO) {
+    public boolean offerMission(Long userId, MissionDTO missionDTO) {
         validateDuration(missionDTO);
 
         Mission mission = Mission.builder()
-                .user(userRepository.findByLogin(userLogin).orElseThrow(ObjectNotFoundException::new))
-                .activity(activityRepository.findById(missionDTO.getActivityId()).orElseThrow(ObjectNotFoundException::new))
+                .user(User.builder().id(userId).build())
+                .activity(Activity.builder().id(missionDTO.getActivityId()).build())
                 .startTime(htmlDate2LocalDateTime(missionDTO.getStartTimeString()))
                 .endTime(htmlDate2LocalDateTime(missionDTO.getEndTimeString()))
                 .state(MissionState.OFFERED)

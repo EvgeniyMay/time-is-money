@@ -34,7 +34,10 @@
             </tr>
         </tbody>
     </table>
-    <a th:href="@{/mission/offer/{login} (login=${user.login})}" th:text="'Add new'"></a>
+    <form th:action="@{/mission/offer/{login} (login=${user.login})}" method="GET">
+        <input type="hidden" name="id" th:value="${user.id}">
+        <input type="submit" th:value="'Make request'">
+    </form>
 </main>
 </body>
 </html>
