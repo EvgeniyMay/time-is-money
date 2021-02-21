@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -58,20 +59,24 @@ public class ActivityService {
         }
     }
 
-    public void archiveById(Long activityId) {
-        Activity activity = Activity.builder()
-                .id(activityId)
-                .isArchived(true)
-                .build();
+    // ToDo | Refactor to one query
+    @Transactional
+    public void archiveById(Long id) {
+        Activity activity = activityRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException());
+
+        activity.setArchived(true);
 
         activityRepository.save(activity);
     }
 
-    public void activateBtId(Long activityId) {
-        Activity activity = Activity.builder()
-                .id(activityId)
-                .isArchived(false)
-                .build();
+    // ToDo | Refactor to one query
+    @Transactional
+    public void activateBtId(Long id) {
+        Activity activity = activityRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException());
+
+        activity.setArchived(false);
 
         activityRepository.save(activity);
     }

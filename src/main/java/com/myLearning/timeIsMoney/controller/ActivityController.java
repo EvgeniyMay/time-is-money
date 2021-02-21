@@ -1,7 +1,6 @@
 package com.myLearning.timeIsMoney.controller;
 
 import com.myLearning.timeIsMoney.dto.ActivityDTO;
-import com.myLearning.timeIsMoney.dto.UserDTO;
 import com.myLearning.timeIsMoney.entity.Activity;
 import com.myLearning.timeIsMoney.exception.ActivityAlreadyExistException;
 import com.myLearning.timeIsMoney.exception.ObjectNotFoundException;
@@ -42,9 +41,8 @@ public class ActivityController {
                                        Pageable pageable) {
         model.addAttribute("activitiesPage", activityService.getPageAbleByStatue(false, pageable));
 
-        return "activity/activeActivity";
+        return "activity/archivedActivity";
     }
-
 
     @GetMapping("/add")
     public String getCreateActivityPage(Model model) {
@@ -79,23 +77,38 @@ public class ActivityController {
         return "activity/editActivity";
     }
     @PostMapping("/edit")
-    public String editActivity(@ModelAttribute("activity") Activity activity) {
+    public String editActivity(@ModelAttribute("activity") Activity activity,
+                               Model model) {
         try {
             activityService.update(activity);
         } catch (Exception e) {
-            e.printStackTrace();
+            model.addAttribute("error", "Such activity exists");
+            model.addAttribute("activity", activity);
         }
 
         return "redirect:/activity/active";
     }
 
-//    @GetMapping("/delete/{activityId}")
-//    public String getDeleteActivityPage(Model model, @PathVariable Long activityId) {
-//        model.addAttribute("activity", activityService.getById(activityId));
-//
-//        return "activity/deleteActivity";
-//    }
+    @GetMapping("/archive/{activityId}")
+    public String getArchiveActivityPage(Model model, @PathVariable Long activityId) {
+        model.addAttribute("activity", activityService.getById(activityId));
 
+        return "/activity/archiveActivity";
+    }
+    @PostMapping("/archive")
+    public String archiveActivity(@ModelAttribute("id") String id) {
+        activityService.archiveById(Long.parseLong(id));
+
+        return "redirect:/activity/active";
+    }
+
+    @PostMapping("/activate")
+    public String activateActivity(@ModelAttribute("id") String id) {
+
+        activityService.activateBtId(Long.parseLong(id));
+
+        return "redirect:/activity/archived";
+    }
 
     @ExceptionHandler(ObjectNotFoundException.class)
     public String handleObjectNotFoundException(ObjectNotFoundException e) {

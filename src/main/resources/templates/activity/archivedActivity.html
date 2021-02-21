@@ -46,16 +46,14 @@
                         <tr th:each="activity : ${activitiesPage}">
                             <td th:text="${activity.name}"></td>
                             <td th:text="${activity.description}"></td>
-                            <td th:text="${activity.missions.size()}"></td>
                             <td>
-                                <form class="no-padding" action="/activity/activate" method="POST">
-                                <input type="hidden" name="id" value="${activity.id}">
-                                <input class="btn btn-outline-light" type="submit" value="Activate">
+                                <form th:action="@{/activity/activate}" method="POST">
+                                    <input type="text" name="id" th:value="${activity.id}" hidden>
+                                    <input type="submit" value="Activate" class="btn btn-outline-light">
                                 </form>
                             </td>
                             <td>
-                                <form class="no-padding" action="/activity/edit" method="GET">
-                                    <input type="hidden" name="id" value="${activity.id}">
+                                <form class="no-padding" th:action="@{/activity/edit/{id} (id=${activity.id})}" method="GET">
                                     <input class="btn btn-outline-light" type="submit" value="Edit">
                                 </form>
                             </td>

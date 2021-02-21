@@ -49,9 +49,7 @@
                             <td th:text="${activity.description}"></td>
                             <td th:text="${activity.missions.size()}"></td>
                             <td>
-                                <form class="no-padding" action="activity/archive" method="GET">
-                                    <input type="hidden" name="id" th:value="${activity.id}">
-                                    <input type="hidden" name="name" th:value="${activity.name}">
+                                <form class="no-padding" th:action="@{/activity/archive/{id} (id=${activity.id})}" method="GET">
                                     <input class="btn btn-outline-light" type="submit" value="Archive">
                                 </form>
                             </td>
