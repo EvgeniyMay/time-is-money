@@ -3,27 +3,44 @@
 <head>
     <meta charset="UTF-8">
     <title>Login</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
 </head>
 <body>
     <header>
         <div th:replace="~{fragments/header :: header}"></div>
     </header>
-    <div th:if="${param.error}">
-        <p th:text="#{login.input.error.data-password}"></p>
-    </div>
+    <main class="container">
+        <div class="row align-items-center justify-content-center">
+            <div class="col-md-3 text-center">
+<!--                ToDo | Add img-->
+<!--                <img class="my-5" src="${pageContext.request.contextPath}/img/logo.png" alt="logo" height="250">-->
+                <h2>Please, login</h2>
 
-    <form action="/login" method="POST" >
-        <table>
-            <tr>
-                <td><label for="username" th:text="#{field.login}"></label></td>
-                <td><input type="text" name="username" required id="username"></td>
-            </tr>
-            <tr>
-                <td><label for="password" th:text="#{field.password}"></label></td>
-                <td><input type="password" name="password" required id="password"></td>
-            </tr>
-        </table>
-        <input type="submit" th:value="#{login.button}">
-    </form>
+<!--                ToDo | Refactor-->
+                <div th:if="${param.error}">
+                    <p th:text="'Wrong login or password'"></p>
+                </div>
+
+                <form action="/login" method="POST" >
+                    <div class="form-floating mt-3">
+                        <input class="form-control" type="text" name="username" id="username" placeholder="Login">
+                        <label for="username">Login</label>
+                    </div>
+                    <div class="form-floating mt-3">
+                        <input class="form-control" id="password" type="password" name="password" placeholder="Password">
+                        <label for="password" th:text="#{field.password}"></label>
+                    </div>
+                    <div class="d-grid gap-2 mt-3">
+                        <button class="btn btn-dark" type="submit" >Login</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </main>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0" crossorigin="anonymous"></script>
 </body>
 </html>
