@@ -1,43 +1,159 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <title th:text="${user.login}"></title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
 </head>
 <body>
-<header>
-    <div th:replace="~{fragments/header :: header}"></div>
-</header>
-<main>
-    <h2 th:text="${user.login}"></h2>
-    <table>
-        <thead>Missions</thead>
-        <tbody>
-            <tr>
-                <th th:text="'Activity'"></th>
-                <th th:text="'Status'"></th>
-                <th th:text="'Given at'"></th>
-                <th th:text="'Coplete before'"></th>
-            </tr>
-            <tr th:each="mission: ${user.missions}" th:if="${!mission.state.name.equals('Completed')}">
-                <td th:text="${mission.activity.name}"></td>
-                <td th:text="${mission.state.getName()}"></td>
-                <td th:text="${mission.startTime}"></td>
-                <td th:text="${mission.endTime}"></td>
+    <header>
+        <div th:replace="~{fragments/header :: header}"></div>
+    </header>
+    <main class="container">
+        <div class="row">
+            <div class="col text-center">
+                <h2 class="my-2">Hello, <span sec:authentication="name"></span></h2>
+            </div>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-8 p-3">
+                <h3 class="mb-2">Missions</h3>
 
-                <td>
-                    <form th:action="@{/mission/pass}" method="POST">
-                        <input type="hidden" name="missionId" th:value="${mission.id}">
-                        <input type="submit" th:value="'Pass'">
-                    </form>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-    <form th:action="@{/mission/offer/{login} (login=${user.login})}" method="GET">
-        <input type="hidden" name="id" th:value="${user.id}">
-        <input type="submit" th:value="'Make request'">
-    </form>
-</main>
+                <div class="d-grid gap-2">
+                    <a class="btn btn-dark" href="mission/offer">Offer mission</a>
+                </div>
+
+                <div th:if="${error != null}" th:text="${error}" class="alert alert-danger my-3" role="alert"></div>
+
+                <h4 class="mt-2">Active</h4>
+                <table class="table table-dark table-striped">
+                    <thead>
+                    <tr>
+                        <th>
+                            <form class="no-padding">
+<!--                                ToDo | Fix pagination-->
+<!--                                <input type="hidden" name="sort_field" value="${'activity_id'}">-->
+                                <input class="btn btn-dark" type="submit" th:value="${'Activity'}">
+                            </form>
+                        </th>
+                        <th>
+                            <form class="no-padding">
+<!--                                ToDo | Fix pagination-->
+<!--                                <input type="hidden" name="sort_field" value="${'start_time'}">-->
+                                <input class="btn btn-dark" type="submit" th:value="${'Start Time'}">
+                            </form>
+                        </th>
+                        <th>
+                            <form class="no-padding">
+<!--                                ToDo | Fix pagination-->
+<!--                                <input type="hidden" name="sort_field" value="${'end_time'}">-->
+                                <input class="btn btn-dark" type="submit" th:value="${'End Time'}">
+                            </form>
+                        </th>
+                        <th></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="mission : ${activeMissions}">
+                            <td>${mission.activity.name}</td>
+                            <td>${mission.startTime}</td>
+                            <td>${mission.endTime}</td>
+                            <td>
+                                <form class="no-padding" action="/mission/pass" method="POST">
+                                <input type="hidden" name="missionId" th:value="${mission.id}">
+                                <input class="btn btn-light" type="submit" value="Pass">
+                                </form>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h4 class="mt-2">Offered</h4>
+                <table class="table table-dark table-striped">
+                    <thead>
+                    <tr>
+                        <th>
+                            <form class="no-padding">
+<!--                                ToDo | Fix pagination-->
+<!--                                <input type="hidden" name="sort_field" value="${'activity_id'}">-->
+                                <input class="btn btn-dark" type="submit" value="${'Activity'}">
+                            </form>
+                        </th>
+                        <th>
+                            <form class="no-padding">
+<!--                                ToDo | Fix pagination-->
+<!--                                <input type="hidden" name="sort_field" value="${'start_time'}">-->
+                                <input class="btn btn-dark" type="submit" value="${'Start Time'}">
+                            </form>
+                        </th>
+                        <th>
+                            <form class="no-padding">
+<!--                                ToDo | Fix pagination-->
+<!--                                <input type="hidden" name="sort_field" value="${'end_time'}">-->
+                                <input class="btn btn-dark" type="submit" value="${'End Time'}">
+                            </form>
+                        </th>
+                        <th></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="mission : ${offeredMissions}">
+                            <td>${mission.activity.name}</td>
+                            <td>${mission.startTime}</td>
+                            <td>${mission.endTime}</td>
+                            <td>
+                                <form class="no-padding" action="/app/mission/cancel" method="POST">
+                                <input type="hidden" name="missionId" value="${mission.id}">
+                                <input class="btn btn-light" type="submit" value="Cancel">
+                                </form>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h4 class="mt-2">Passed</h4>
+                <table class="table table-dark table-striped">
+                    <thead>
+                    <tr>
+                        <th>
+                            <form class="no-padding">
+<!--                                ToDo | Fix pagination-->
+<!--                                <input type="hidden" name="sort_field" value="${'activity_id'}">-->
+                                <input class="btn btn-dark" type="submit" value="${'Activity'}">
+                            </form>
+                        </th>
+                        <th>
+                            <form class="no-padding">
+<!--                                ToDo | Fix pagination-->
+<!--                                <input type="hidden" name="sort_field" value="${'start_time'}">-->
+                                <input class="btn btn-dark" type="submit" value="${'Start Time'}">
+                            </form>
+                        </th>
+                        <th>
+                            <form class="no-padding">
+<!--                                ToDo | Fix pagination-->
+<!--                                <input type="hidden" name="sort_field" value="${'end_time'}">-->
+                                <input class="btn btn-dark" type="submit" value="${'End Time'}">
+                            </form>
+                        </th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="mission : ${passedMissions}">
+                            <td>${mission.activity.name}</td>
+                            <td>${mission.startTime}</td>
+                            <td>${mission.endTime}</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <hr/>
+            </div>
+        </div>
+    </main>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0" crossorigin="anonymous"></script>
 </body>
 </html>
