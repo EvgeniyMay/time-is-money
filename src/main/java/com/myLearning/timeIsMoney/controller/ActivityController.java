@@ -1,10 +1,12 @@
 package com.myLearning.timeIsMoney.controller;
 
 import com.myLearning.timeIsMoney.dto.ActivityDTO;
+import com.myLearning.timeIsMoney.entity.Activity;
 import com.myLearning.timeIsMoney.exception.ActivityAlreadyExistException;
 import com.myLearning.timeIsMoney.exception.ObjectNotFoundException;
 import com.myLearning.timeIsMoney.service.ActivityService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -21,8 +23,9 @@ public class ActivityController {
     }
 
     @GetMapping
-    public String getAllActivitiesPage(Model model) {
-        model.addAttribute("activities", activityService.getAll());
+    public String getAllActivitiesPage(Model model,
+                                       Pageable pageable) {
+        model.addAttribute("activities", activityService.getAllPageAble(pageable));
 
         return "activity/allActivities";
     }
@@ -51,8 +54,8 @@ public class ActivityController {
     }
 
     @PostMapping("/edit")
-    public String editActivity(@ModelAttribute ActivityDTO activityDTO) {
-        activityService.update(activityDTO);
+    public String editActivity(@ModelAttribute Activity activity) {
+        activityService.update(activity);
 
         return "redirect:/activity";
     }
@@ -65,25 +68,19 @@ public class ActivityController {
         return "activity/deleteActivity";
     }
 
-    @PostMapping("/delete")
-    public String deleteActivity(@RequestParam Long activityId) {
-        activityService.deleteById(activityId);
 
-        return "redirect:/activity";
-    }
 
 
     @ExceptionHandler(ObjectNotFoundException.class)
     public String handleObjectNotFoundException(ObjectNotFoundException e) {
-        //ToDo
-        // Log
         return "error/404";
     }
 
     @ExceptionHandler(ActivityAlreadyExistException.class)
     public String handleRuntimeException(ActivityAlreadyExistException e,
-                                         Model model) {
-        model.addAttribute("activities", activityService.getAll());
+                                         Model model,
+                                         Pageable pageable) {
+        model.addAttribute("activities", activityService.getAllPageAble(pageable));
         model.addAttribute("activityExistMessage", e.getMessage());
 
         return "activity/allActivities";
