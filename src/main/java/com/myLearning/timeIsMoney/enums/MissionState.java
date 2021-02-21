@@ -2,7 +2,7 @@ package com.myLearning.timeIsMoney.enums;
 
 public enum MissionState {
 
-    OFFERED("Offered"), GIVEN("Given"), DURING("During"), PASSED("Passed"), COMPLETED("Completed");
+    OFFERED("Offered"), ACTIVE("Active"), PASSED("Passed"), COMPLETED("Completed");
 
 
     private String name;

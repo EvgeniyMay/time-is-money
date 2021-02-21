@@ -8,22 +8,22 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
-// TODO
-// DELETE THIS
 public class UserDetailsImpl implements UserDetails {
 
+    private Long id;
     private String username;
     private String password;
 
     private List<GrantedAuthority> authorities;
 
     public UserDetailsImpl(User user) {
+        this.id = user.getId();
         this.username = user.getLogin();
         this.password = user.getPassword();
         this.authorities = Arrays.asList(new SimpleGrantedAuthority(user.getRole().getAuthority()));
     }
 
-    public static UserDetailsImpl getUserDetails(User user) {
+    public static UserDetailsImpl getUserDetailsFromUser(User user) {
         return new UserDetailsImpl(user);
     }
 

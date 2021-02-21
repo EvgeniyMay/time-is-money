@@ -4,6 +4,7 @@ import com.myLearning.timeIsMoney.dto.UserDTO;
 import com.myLearning.timeIsMoney.entity.User;
 import com.myLearning.timeIsMoney.enums.Role;
 import com.myLearning.timeIsMoney.exception.LoginAlreadyExistException;
+import com.myLearning.timeIsMoney.exception.UserNotFountException;
 import com.myLearning.timeIsMoney.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -14,8 +15,8 @@ import java.util.List;
 @Service
 public class UserService {
 
-    private PasswordEncoder passwordEncoder;
-    private UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
+    private final UserRepository userRepository;
 
     @Autowired
     UserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
@@ -23,41 +24,30 @@ public class UserService {
         this.passwordEncoder = passwordEncoder;
     }
 
-    //ToDo
-    // Builder
-    public boolean create(UserDTO userDTO) {
-
-        User user = User.builder()
-                .login(userDTO.getLogin())
-                .password(passwordEncoder.encode(userDTO.getPassword()))
-                .role(Role.USER)
-                .build();
-        try {
-            userRepository.save(user);
-            //ToDo
-            // Log
-            return true;
-        } catch (Exception e) {
-            //ToDo
-            // Log
-            // Localize error message
-            throw new LoginAlreadyExistException("Login already exists");
-        }
-    }
-
     public List<User> getAll() {
         return userRepository.findAll();
     }
 
-    //ToDo
-    // Add Exception
-    public User getById(Long userId) {
-        return userRepository.findById(userId).get();
+    public boolean create(UserDTO userDTO) {
+        try {
+            userRepository.save(User.builder()
+                    .login(userDTO.getLogin())
+                    .password(passwordEncoder.encode(userDTO.getPassword()))
+                    .role(Role.USER)
+                    .build());
+            return true;
+        } catch (Exception e) {
+            throw new LoginAlreadyExistException("Login already exists");
+        }
     }
 
-    //ToDo
-    // Add Exception
+    public User getById(Long userId) {
+        return userRepository.findById(userId)
+                .orElseThrow(()->new UserNotFountException("User with id " + userId + " not found"));
+    }
+
     public User getByLogin(String login) {
-        return userRepository.findByLogin(login).get();
+        return userRepository.findByLogin(login)
+                .orElseThrow(()->new UserNotFountException("User with login " + login + " not found"));
     }
 }
