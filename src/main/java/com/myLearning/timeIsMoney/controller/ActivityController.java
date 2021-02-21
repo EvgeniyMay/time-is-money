@@ -1,6 +1,7 @@
 package com.myLearning.timeIsMoney.controller;
 
 import com.myLearning.timeIsMoney.dto.ActivityDTO;
+import com.myLearning.timeIsMoney.dto.UserDTO;
 import com.myLearning.timeIsMoney.entity.Activity;
 import com.myLearning.timeIsMoney.exception.ActivityAlreadyExistException;
 import com.myLearning.timeIsMoney.exception.ObjectNotFoundException;
@@ -10,7 +11,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
 
 @Controller
 @RequestMapping("/activity")
@@ -49,10 +53,23 @@ public class ActivityController {
         return "activity/createActivity";
     }
     @PostMapping("/add")
-    public String createActivity(@ModelAttribute ActivityDTO activityDTO) {
-        activityService.create(activityDTO);
+    public String createActivity(@ModelAttribute("activityForm") @Valid ActivityDTO activityDTO,
+                                 BindingResult bindingResult,
+                                 Model model) {
+        if(bindingResult.hasErrors()) {
+            return "activity/createActivity";
+        }
 
-        return "redirect:/activity";
+        try {
+            activityService.create(activityDTO);
+        } catch(ActivityAlreadyExistException e) {
+            model.addAttribute("error", "Such activity already exists");
+            model.addAttribute("activityForm", activityDTO);
+
+            return "activity/createActivity";
+        }
+
+        return "redirect:/activity/active";
     }
 
     @GetMapping("/edit/{id}")
@@ -62,21 +79,22 @@ public class ActivityController {
         return "activity/editActivity";
     }
     @PostMapping("/edit")
-    public String editActivity(@ModelAttribute Activity activity) {
-        activityService.update(activity);
+    public String editActivity(@ModelAttribute("activity") Activity activity) {
+        try {
+            activityService.update(activity);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
-        return "redirect:/activity";
+        return "redirect:/activity/active";
     }
 
-
-    @GetMapping("/delete/{activityId}")
-    public String getDeleteActivityPage(Model model, @PathVariable Long activityId) {
-        model.addAttribute("activity", activityService.getById(activityId));
-
-        return "activity/deleteActivity";
-    }
-
-
+//    @GetMapping("/delete/{activityId}")
+//    public String getDeleteActivityPage(Model model, @PathVariable Long activityId) {
+//        model.addAttribute("activity", activityService.getById(activityId));
+//
+//        return "activity/deleteActivity";
+//    }
 
 
     @ExceptionHandler(ObjectNotFoundException.class)
