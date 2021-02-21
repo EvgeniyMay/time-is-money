@@ -6,6 +6,7 @@ import com.myLearning.timeIsMoney.service.ActivityService;
 import com.myLearning.timeIsMoney.service.MissionService;
 import com.myLearning.timeIsMoney.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -30,8 +31,9 @@ public class MissionController {
     }
 
     @GetMapping
-    public String getAllMissionsPage(Model model) {
-        model.addAttribute("missions", missionService.getAll());
+    public String getAllMissionsPage(Pageable pageable,
+                                     Model model) {
+        model.addAttribute("missions", missionService.getAllPageable(pageable));
 
         return "mission/allMissions";
     }
@@ -45,27 +47,15 @@ public class MissionController {
     }
 
 
-    @PostMapping("/pass")
-    public String passMission(@RequestParam Long missionId){
-        missionService.passMission(missionId);
-
-        return "redirect:/mission";
-    }
-
-    @PostMapping("/complete")
-    public String completeMission(@RequestParam Long missionId){
-        missionService.completeMission(missionId);
-
-        return "redirect:/mission";
-    }
 
 
     @GetMapping("/create/{userId}")
     public String getCreateMissionPage(@PathVariable Long userId,
+                                       Pageable pageable,
                                        Model model) {
         model.addAttribute("missionForm", new MissionDTO());
         model.addAttribute("userId", userId);
-        model.addAttribute("activities", activityService.getAll());
+        model.addAttribute("activities", activityService.getAllPageAble(pageable));
 
         return "mission/createMission";
     }
@@ -74,20 +64,19 @@ public class MissionController {
     public String createMission(@ModelAttribute("missionForm") @Valid MissionDTO missionDTO,
                                 BindingResult bindingResult,
                                 @RequestParam Long userId,
+                                Pageable pageable,
                                 Model model) {
         model.addAttribute("userId", userId);
-        model.addAttribute("activities", activityService.getAll());
+        model.addAttribute("activities", activityService.getAllPageAble(pageable));
 
         if(bindingResult.hasErrors()) {
             return "mission/createMission";
         }
 
         try {
-            missionService.createMission(userId, missionDTO);
+            missionService.createMission(missionDTO);
         } catch (DurationLessThanZeroException e) {
             model.addAttribute("missionForm", new MissionDTO());
-            //ToDo
-            // Localize
             model.addAttribute("durationLessThanZero", "Duration can't be less than zero");
 
             return "mission/createMission";
@@ -100,10 +89,11 @@ public class MissionController {
     @PreAuthorize("authentication.principal.username == #login")
     public String getOfferMissionPage(@PathVariable String login,
                                       @RequestParam Long id,
+                                      Pageable pageable,
                                       Model model) {
         model.addAttribute("id", id);
         model.addAttribute("missionForm", new MissionDTO());
-        model.addAttribute("activities", activityService.getAll());
+        model.addAttribute("activities", activityService.getAllPageAble(pageable));
 
         return "mission/offerMission";
     }
@@ -112,7 +102,6 @@ public class MissionController {
     public String offerMission(@RequestParam String userLogin,
                                @ModelAttribute MissionDTO missionDTO,
                                @RequestParam Long id) {
-        missionService.offerMission(id, missionDTO);
 
         return "redirect:/user";
     }

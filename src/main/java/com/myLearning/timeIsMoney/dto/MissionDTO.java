@@ -1,5 +1,6 @@
 package com.myLearning.timeIsMoney.dto;
 
+import com.myLearning.timeIsMoney.entity.User;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -11,6 +12,8 @@ import javax.validation.constraints.NotNull;
 public class MissionDTO {
 
 //    private Long userId;
+    @NotNull(message = "{input.error.empty_field}")
+    private User user;
 
     @NotNull(message = "{input.error.empty_field}")
     private Long activityId;
