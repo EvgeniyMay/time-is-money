@@ -1,41 +1,42 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
-<body>
-    <div th:fragment="header">
-        <div class="language">
-            <a href="?lang=en" th:text="#{lang.en}"></a> |
-            <a href="?lang=ru" th:text="#{lang.ru}"></a>
+<div th:fragment="header" class="container bg-dark text-white">
+    <div class="row align-items-center justify-content-between">
+        <div class="col-md-auto">
+            <div class="row align-items-center justify-content-start">
+                <div class="col-auto">
+<!--                    ToDo | Add img-->
+<!--                    <img src="${pageContext.request.contextPath}/img/logo.png" alt="logo" height="75">-->
+                </div>
+                <div class="col-auto">
+                    <h1>Time Is Money</h1>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-auto">
+            <div class="row align-items-center justify-content-end">
+                <div class="col-auto">
+                    <a class="text-white" href="?lang=en" th:text="#{language.en}"></a>
+                    <a class="text-white" href="?lang=ru" th:text="#{language.ru}"></a>
+                </div>
+                <div sec:authorize="!isAuthenticated()">
+                    <div class="col-auto">
+                        <a class="btn btn-light btn-outline-dark" href="/login" th:text="#{nav.login}">></a>
+                    </div>
+                </div>
+                <div class="col-auto" sec:authorize="isAuthenticated()">
+                    <a class="btn btn-dark" href="/profile" th:text="#{nav.profile}"></a>
+                </div>
+                <div class="col-auto" sec:authorize="isAuthenticated()">
+                    <a class="btn btn-light" href="/logout" th:text="#{nav.logout}"></a>
+                </div>
+            </div>
         </div>
         <hr/>
-        <div>
-            <h2>Time Is Money</h2>
-        </div>
-        <hr/>
-        <div class="navigation">
-            <nav>
-                <a th:href="@{/}" th:text="#{nav.main}"></a>
-               <span sec:authorize="hasAuthority('ADMIN')">
-                    | <a th:href="@{/activity}" th:text="#{nav.activities}"></a>
-                </span>
-               <span sec:authorize="hasAuthority('ADMIN')">
-                    | <a th:href="@{/user}" th:text="#{nav.users}"></a>
-                </span>
-                <span sec:authorize="isAuthenticated()">
-                    | <a th:href="@{/mission}" th:text="#{nav.missions}"></a>
-                </span>
-            </nav>
-        </div>
-        <div class="account">
-            <span sec:authorize="isAuthenticated()">
-                <a th:href="@{/logout}" th:text="#{nav.logout}"></a>
-                <a th:href="@{/user/{login} (login=${#authentication.name})}" th:text="#{nav.profile}"></a>
-            </span>
-            <span sec:authorize="!isAuthenticated()">
-                <a th:href="@{/login}" th:text="#{nav.login}"></a>
-                <a th:href="@{/signup}" th:text="#{nav.signup}"></a>
-            </span>
+        <div class="row">
+            <div sec:authorize="hasAuthority('ADMIN')" th:replace="~{fragments/adminPanel :: adminPanel}"></div>
         </div>
     </div>
-</body>
+</div>
 </html>

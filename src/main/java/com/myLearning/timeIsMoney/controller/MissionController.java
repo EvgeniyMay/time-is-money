@@ -55,7 +55,7 @@ public class MissionController {
                                        Model model) {
         model.addAttribute("missionForm", new MissionDTO());
         model.addAttribute("userId", userId);
-        model.addAttribute("activities", activityService.getAllPageAble(pageable));
+        model.addAttribute("activities", activityService.getPageAbleByStatue(true, pageable));
 
         return "mission/createMission";
     }
@@ -67,7 +67,7 @@ public class MissionController {
                                 Pageable pageable,
                                 Model model) {
         model.addAttribute("userId", userId);
-        model.addAttribute("activities", activityService.getAllPageAble(pageable));
+        model.addAttribute("activities", activityService.getPageAbleByStatue(true, pageable));
 
         if(bindingResult.hasErrors()) {
             return "mission/createMission";
@@ -93,7 +93,7 @@ public class MissionController {
                                       Model model) {
         model.addAttribute("id", id);
         model.addAttribute("missionForm", new MissionDTO());
-        model.addAttribute("activities", activityService.getAllPageAble(pageable));
+        model.addAttribute("activities", activityService.getPageAbleByStatue(true, pageable));
 
         return "mission/offerMission";
     }
@@ -109,8 +109,6 @@ public class MissionController {
 
     @ExceptionHandler(RuntimeException.class)
     public String handleObjectNotFoundException(RuntimeException e) {
-        //ToDo
-        // Log
         return "error/404";
     }
 }

@@ -21,12 +21,13 @@ public class ActivityService {
         this.activityRepository = activityRepository;
     }
 
-    public Page<Activity> getAllPageAble(Pageable pageable) {
-        return activityRepository.findAll(pageable);
+    public Page<Activity> getPageAbleByStatue(boolean isActive, Pageable pageable) {
+
+        return activityRepository.findActivitiesByIsArchivedIs(!isActive, pageable);
     }
 
     public List<Activity> getActive() {
-        return activityRepository.findActivitiesByArchivedIsFalse();
+        return activityRepository.findActivitiesByIsArchivedIsFalse();
     }
 
     public boolean create(ActivityDTO activityDTO) {

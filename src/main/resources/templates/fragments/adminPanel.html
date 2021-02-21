@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<div th:fragment="adminPanel" class="container">
+    <div class="row">
+        <div class="col-auto">
+            <div class="dropdown">
+                <p class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown" >
+                    Activities
+                </p>
+                <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" href="/activity/active">Active</a>
+                    <li><a class="dropdown-item" href="/activity/archived">Archive</a>
+                    <li><hr class="dropdown-divider"></li>
+                    <li><a class="dropdown-item" href="/activity/add">Create new</a>
+                </ul>
+            </div>
+        </div>
+        <div class="col-auto">
+            <div class="dropdown">
+                <p class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown" >
+                    Missions
+                </p>
+                <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" href="/mission/active">Active</a></li>
+                    <li><a class="dropdown-item" href="/mission/offered">Offered</a>
+                    <li><a class="dropdown-item" href="/mission/passed">Passed</a>
+                    <li><a class="dropdown-item" href="/mission/completed">Completed</a>
+                    <li><hr class="dropdown-divider"></li>
+                    <li><a class="dropdown-item" href="/mission/add">Create new</a>
+                </ul>
+            </div>
+        </div>
+        <div class="col-auto">
+            <div class="dropdown">
+                <p class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown" >
+                    Users
+                </p>
+                <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" href="/user">All</a></li>
+                    <li><hr class="dropdown-divider"></li>
+                    <li><a class="dropdown-item" href="/registration">Create new</a>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>

@@ -7,6 +7,7 @@ import com.myLearning.timeIsMoney.exception.ObjectNotFoundException;
 import com.myLearning.timeIsMoney.service.ActivityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -22,12 +23,22 @@ public class ActivityController {
         this.activityService = activityService;
     }
 
-    @GetMapping
-    public String getAllActivitiesPage(Model model,
+    @GetMapping("/active")
+    public String getActiveActivityPage(Model model,
+                                       @PageableDefault(sort = {"name"}, size = 7)
                                        Pageable pageable) {
-        model.addAttribute("activities", activityService.getAllPageAble(pageable));
+        model.addAttribute("activitiesPage", activityService.getPageAbleByStatue(true, pageable));
 
-        return "activity/allActivities";
+        return "activity/activeActivity";
+    }
+
+    @GetMapping("/archived")
+    public String getArchivedActivityPage(Model model,
+                                       @PageableDefault(sort = {"name"}, size = 7)
+                                       Pageable pageable) {
+        model.addAttribute("activitiesPage", activityService.getPageAbleByStatue(false, pageable));
+
+        return "activity/activeActivity";
     }
 
 
@@ -37,7 +48,6 @@ public class ActivityController {
 
         return "activity/createActivity";
     }
-
     @PostMapping("/add")
     public String createActivity(@ModelAttribute ActivityDTO activityDTO) {
         activityService.create(activityDTO);
@@ -45,14 +55,12 @@ public class ActivityController {
         return "redirect:/activity";
     }
 
-
     @GetMapping("/edit/{id}")
     public String getEditActivityPage(Model model, @PathVariable Long id) {
         model.addAttribute("activity", activityService.getById(id));
 
         return "activity/editActivity";
     }
-
     @PostMapping("/edit")
     public String editActivity(@ModelAttribute Activity activity) {
         activityService.update(activity);
@@ -80,7 +88,7 @@ public class ActivityController {
     public String handleRuntimeException(ActivityAlreadyExistException e,
                                          Model model,
                                          Pageable pageable) {
-        model.addAttribute("activities", activityService.getAllPageAble(pageable));
+        model.addAttribute("activities", activityService.getPageAbleByStatue(true, pageable));
         model.addAttribute("activityExistMessage", e.getMessage());
 
         return "activity/allActivities";

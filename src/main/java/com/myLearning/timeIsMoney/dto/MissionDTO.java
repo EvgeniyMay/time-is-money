@@ -11,7 +11,6 @@ import javax.validation.constraints.NotNull;
 @Setter
 public class MissionDTO {
 
-//    private Long userId;
     @NotNull(message = "{input.error.empty_field}")
     private User user;
 
