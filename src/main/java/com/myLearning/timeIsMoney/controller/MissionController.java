@@ -70,16 +70,21 @@ public class MissionController {
         return "mission/offeredMission";
     }
 
+
+    @GetMapping("/create")
+    public String getCreateMissionPage(Model model) {
+        model.addAttribute("missionForm", new MissionDTO());
+        model.addAttribute("usersAndActivities", missionService.getUsersAndActivities());
+
+        return "mission/createMission";
+    }
     @PostMapping("/create")
     public String createMission(@ModelAttribute("missionForm") @Valid MissionDTO missionDTO,
                                 BindingResult bindingResult,
-                                @RequestParam Long userId,
-                                Pageable pageable,
                                 Model model) {
-        model.addAttribute("userId", userId);
-        model.addAttribute("activities", activityService.getPageAbleByStatue(true, pageable));
 
         if(bindingResult.hasErrors()) {
+            model.addAttribute("usersAndActivities", missionService.getUsersAndActivities());
             return "mission/createMission";
         }
 
@@ -87,11 +92,12 @@ public class MissionController {
             missionService.createMission(missionDTO, MissionState.ACTIVE);
         } catch (DurationLessThanZeroException e) {
             model.addAttribute("missionForm", new MissionDTO());
-            model.addAttribute("durationLessThanZero", "Duration can't be less than zero");
+            model.addAttribute("usersAndActivities", missionService.getUsersAndActivities());
+            model.addAttribute("error", "Duration can't be less than zero");
 
             return "mission/createMission";
         }
-        return "redirect:/user";
+        return "redirect:/mission/active";
     }
 
 

@@ -24,37 +24,35 @@
 
                 <div th:if="${activities.size() != 0}">
                     <form action="/mission/offer" th:object="${missionForm}" method="POST">
-                    <div class="my-3">
-                        <label for="activity">Activity</label>
-                        <select class="form-select" id="activity" name="activityId">
-                            <option th:each="activity : ${activities}"
-                                    th:text="${activity.name} + ' | ' + ${activity.description}"
-                                    th:field="*{activityId}"
-                                    th:value="${activity.id}">
-                            </option>
-                        </select>
-                    </div>
-                    <div class="mb-2">
-                        <label for="startTime" class="form-label">Start time</label>
-                        <input th:field="*{startTimeString}"
-                               type="datetime-local" class="form-control" id="startTime">
-                    </div>
-                    <div th:if="${#fields.hasErrors('startTimeString')}">
-                        <div th:errors="*{startTimeString}" class="alert alert-danger my-3" role="alert" ></div>
-                    </div>
+                        <div class="my-3">
+                            <label for="activity">Activity</label>
+                            <select class="form-select" id="activity" name="activityId">
+                                <option th:each="activity : ${activities}"
+                                        th:text="${activity.name} + ' | ' + ${activity.description}"
+                                        th:field="*{activityId}"
+                                        th:value="${activity.id}">
+                                </option>
+                            </select>
+                        </div>
+                        <div class="mb-2">
+                            <label for="startTime" class="form-label">Start time</label>
+                            <input th:field="*{startTimeString}"  type="datetime-local" class="form-control" id="startTime">
+                        </div>
+                        <div th:if="${#fields.hasErrors('startTimeString')}">
+                            <div th:errors="*{startTimeString}" class="alert alert-danger my-3" role="alert" ></div>
+                        </div>
 
-                    <div class="mb-3">
-                        <label for="endTime" class="form-label">End time</label>
-                        <input th:field="*{endTimeString}"
-                               type="datetime-local" class="form-control" id="endTime">
-                    </div>
-                    <div th:if="${#fields.hasErrors('endTimeString')}">
-                        <div th:errors="*{endTimeString}" class="alert alert-danger my-3" role="alert" ></div>
-                    </div>
+                        <div class="mb-3">
+                            <label for="endTime" class="form-label">End time</label>
+                            <input th:field="*{endTimeString}" type="datetime-local" class="form-control" id="endTime">
+                        </div>
+                        <div th:if="${#fields.hasErrors('endTimeString')}">
+                            <div th:errors="*{endTimeString}" class="alert alert-danger my-3" role="alert" ></div>
+                        </div>
 
-                    <div class="d-grid gap-2 mt-3">
-                        <button class="btn btn-dark" type="submit">Offer</button>
-                    </div>
+                        <div class="d-grid gap-2 mt-3">
+                            <button class="btn btn-dark" type="submit">Offer</button>
+                        </div>
                     </form>
                 </div>
             </div>

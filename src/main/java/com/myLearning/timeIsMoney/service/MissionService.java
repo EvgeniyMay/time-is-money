@@ -4,6 +4,7 @@ import com.myLearning.timeIsMoney.dto.MissionDTO;
 import com.myLearning.timeIsMoney.entity.Activity;
 import com.myLearning.timeIsMoney.entity.Mission;
 import com.myLearning.timeIsMoney.entity.User;
+import com.myLearning.timeIsMoney.entity.UsersAndActivities;
 import com.myLearning.timeIsMoney.enums.MissionState;
 import com.myLearning.timeIsMoney.exception.DurationLessThanZeroException;
 import com.myLearning.timeIsMoney.repository.ActivityRepository;
@@ -46,12 +47,27 @@ public class MissionService {
                 .endTime(LocalDateUtil.parseHtmlDate(missionDTO.getEndTimeString()))
                 .state(state)
                 .build();
+
+
+        // ToDo | Delete !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        System.out.println(missionDTO.getUserId());
+        System.out.println(missionDTO.getActivityId());
+        System.out.println(missionDTO.getStartTimeString());
+        System.out.println(missionDTO.getEndTimeString());
+
         try {
             missionRepository.save(mission);
             return true;
         } catch (Exception e) {
             throw new RuntimeException();
         }
+    }
+
+    public UsersAndActivities getUsersAndActivities() {
+        return UsersAndActivities.builder()
+                .users(userRepository.findAll())
+                .activities(activityRepository.findActivitiesByIsArchivedIsFalse())
+                .build();
     }
 
     public boolean updateMissionState(Mission mission, MissionState state) {
