@@ -41,6 +41,33 @@ public class MissionController {
         return "mission/activeMission";
     }
 
+    @GetMapping("/completed")
+    public String getCompletedMissionsPage(Model model,
+                                        @PageableDefault(sort = {"id"}, size = 7)
+                                                Pageable pageable) {
+        model.addAttribute("missionsPage", missionService.getPageableByState(MissionState.COMPLETED, pageable));
+
+        return "mission/completedMission";
+    }
+
+    @GetMapping("/passed")
+    public String getPassedMissionsPage(Model model,
+                                            @PageableDefault(sort = {"id"}, size = 7)
+                                                    Pageable pageable) {
+        model.addAttribute("missionsPage", missionService.getPageableByState(MissionState.PASSED, pageable));
+
+        return "mission/passedMission";
+    }
+
+    @GetMapping("/offered")
+    public String getOfferedMissionsPage(Model model,
+                                        @PageableDefault(sort = {"id"}, size = 7)
+                                                Pageable pageable) {
+        model.addAttribute("missionsPage", missionService.getPageableByState(MissionState.OFFERED, pageable));
+
+        return "mission/offeredMission";
+    }
+
     @GetMapping("/create/{userId}")
     public String getCreateMissionPage(@PathVariable Long userId,
                                        Pageable pageable,

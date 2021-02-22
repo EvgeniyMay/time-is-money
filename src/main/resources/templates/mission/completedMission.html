@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Active Missions</title>
+    <title>Completed missions</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet"
@@ -16,8 +16,9 @@
             <div class="col-8">
                 <h2 class="my-3">Active missions:</h2>
 
-                <div th:if="${missionsPage.totalPages == 0}" class="alert alert-dark my-3" role="alert">
-                    No active missions
+                <div th:if="${missionsPage.totalPages == 0}"
+                     class="alert alert-dark my-3" role="alert">
+                    No completed missions
                 </div>
 
                 <div th:if="${missionsPage.totalPages > 0}">
