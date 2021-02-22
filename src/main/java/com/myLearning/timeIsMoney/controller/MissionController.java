@@ -72,7 +72,6 @@ public class MissionController {
         return "mission/offeredMission";
     }
 
-
     @GetMapping("/create")
     public String getCreateMissionPage(Model model) {
         model.addAttribute("missionForm", new MissionDTO());
@@ -101,7 +100,6 @@ public class MissionController {
         }
         return "redirect:/mission/active";
     }
-
 
     @GetMapping("/offer")
     public String getOfferMissionPage(Model model) {

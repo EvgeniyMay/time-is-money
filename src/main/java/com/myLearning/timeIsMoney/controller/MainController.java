@@ -9,6 +9,6 @@ public class MainController {
 
     @GetMapping("/")
     public String getMainPage() {
-        return "redirect:/login";
+        return "redirect:/user/profile";
     }
 }

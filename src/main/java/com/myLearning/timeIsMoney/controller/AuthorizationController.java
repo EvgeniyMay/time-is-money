@@ -51,10 +51,6 @@ public class AuthorizationController {
         return "authorization/login";
     }
 
-    @GetMapping("/loginSuccess")
-    public String getLoginSuccessPage() {
-        return "authorization/loginSuccess";
-    }
 
     @GetMapping("/logout")
     public String getLogoutPage() {
