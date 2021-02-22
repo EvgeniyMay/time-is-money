@@ -1,12 +1,14 @@
 package com.myLearning.timeIsMoney.controller;
 
 import com.myLearning.timeIsMoney.dto.MissionDTO;
+import com.myLearning.timeIsMoney.enums.MissionState;
 import com.myLearning.timeIsMoney.exception.DurationLessThanZeroException;
 import com.myLearning.timeIsMoney.service.ActivityService;
 import com.myLearning.timeIsMoney.service.MissionService;
 import com.myLearning.timeIsMoney.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -30,24 +32,14 @@ public class MissionController {
         this.activityService = activityService;
     }
 
-    @GetMapping
-    public String getAllMissionsPage(Pageable pageable,
-                                     Model model) {
-        model.addAttribute("missions", missionService.getAllPageable(pageable));
+    @GetMapping("/active")
+    public String getActiveMissionsPage(Model model,
+                                        @PageableDefault(sort = {"id"}, size = 7)
+                                                Pageable pageable) {
+        model.addAttribute("missionsPage", missionService.getPageableByState(MissionState.ACTIVE, pageable));
 
-        return "mission/allMissions";
+        return "mission/activeMission";
     }
-
-    @GetMapping("/of/{userId}")
-    public String getMissionsOfUserPage(@PathVariable Long userId,
-                                        Model model) {
-        model.addAttribute("user", userService.getById(userId));
-
-        return "/mission/userMissions";
-    }
-
-
-
 
     @GetMapping("/create/{userId}")
     public String getCreateMissionPage(@PathVariable Long userId,
@@ -107,8 +99,8 @@ public class MissionController {
     }
 
 
-    @ExceptionHandler(RuntimeException.class)
-    public String handleObjectNotFoundException(RuntimeException e) {
-        return "error/404";
-    }
+//    @ExceptionHandler(RuntimeException.class)
+//    public String handleObjectNotFoundException(RuntimeException e) {
+//        return "error/404";
+//    }
 }

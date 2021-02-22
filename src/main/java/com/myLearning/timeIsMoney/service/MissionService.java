@@ -30,8 +30,8 @@ public class MissionService {
         this.activityRepository = activityRepository;
     }
 
-    public Page<Mission> getAllPageable(Pageable pageable) {
-        return missionRepository.findAll(pageable);
+    public Page<Mission> getPageableByState(MissionState state, Pageable pageable) {
+        return missionRepository.findMissionsByState(state, pageable);
     }
 
     public boolean createMission(MissionDTO missionDTO) {
