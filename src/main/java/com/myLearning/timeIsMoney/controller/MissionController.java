@@ -1,10 +1,8 @@
 package com.myLearning.timeIsMoney.controller;
 
-import com.myLearning.timeIsMoney.dto.ActivityDTO;
 import com.myLearning.timeIsMoney.dto.MissionDTO;
 import com.myLearning.timeIsMoney.entity.UserDetailsImpl;
 import com.myLearning.timeIsMoney.enums.MissionState;
-import com.myLearning.timeIsMoney.enums.Role;
 import com.myLearning.timeIsMoney.exception.DurationLessThanZeroException;
 import com.myLearning.timeIsMoney.service.ActivityService;
 import com.myLearning.timeIsMoney.service.MissionService;
@@ -12,17 +10,13 @@ import com.myLearning.timeIsMoney.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.Arrays;
 
 @Controller
 @RequestMapping("/mission")
@@ -160,6 +154,4 @@ public class MissionController {
 
         return "redirect:/mission/offered";
     }
-
-
 }
