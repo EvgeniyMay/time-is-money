@@ -34,9 +34,9 @@
                         <label for="description">Description</label>
                         <input class="form-control" type="text" th:field="*{description}" id="description">
                     </div>
-                        <div th:if="${#fields.hasErrors('description')}">
-                            <div th:errors="*{description}" class="alert alert-danger my-3" role="alert" ></div>
-                        </div>
+                    <div th:if="${#fields.hasErrors('description')}">
+                        <div th:errors="*{description}" class="alert alert-danger my-3" role="alert" ></div>
+                    </div>
 
                     <div class="d-grid gap-2 mt-3">
                         <button class="btn btn-dark" type="submit">Create</button>

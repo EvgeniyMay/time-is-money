@@ -3,11 +3,13 @@ package com.myLearning.timeIsMoney.service;
 import com.myLearning.timeIsMoney.dto.MissionDTO;
 import com.myLearning.timeIsMoney.entity.Activity;
 import com.myLearning.timeIsMoney.entity.Mission;
+import com.myLearning.timeIsMoney.entity.User;
 import com.myLearning.timeIsMoney.enums.MissionState;
 import com.myLearning.timeIsMoney.exception.DurationLessThanZeroException;
 import com.myLearning.timeIsMoney.repository.ActivityRepository;
 import com.myLearning.timeIsMoney.repository.MissionRepository;
 import com.myLearning.timeIsMoney.repository.UserRepository;
+import com.myLearning.timeIsMoney.util.LocalDateUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -34,15 +36,15 @@ public class MissionService {
         return missionRepository.findMissionsByState(state, pageable);
     }
 
-    public boolean createMission(MissionDTO missionDTO) {
+    public boolean createMission(MissionDTO missionDTO, MissionState state) {
         validateDuration(missionDTO);
 
         Mission mission = Mission.builder()
-                .user(missionDTO.getUser())
+                .user(User.builder().id(missionDTO.getUserId()).build())
                 .activity(Activity.builder().id(missionDTO.getActivityId()).build())
-                .startTime(htmlDate2LocalDateTime(missionDTO.getStartTimeString()))
-                .endTime(htmlDate2LocalDateTime(missionDTO.getEndTimeString()))
-                .state(MissionState.ACTIVE)
+                .startTime(LocalDateUtil.parseHtmlDate(missionDTO.getStartTimeString()))
+                .endTime(LocalDateUtil.parseHtmlDate(missionDTO.getEndTimeString()))
+                .state(state)
                 .build();
         try {
             missionRepository.save(mission);
@@ -61,13 +63,6 @@ public class MissionService {
         } catch (Exception e) {
             throw new RuntimeException();
         }
-    }
-
-    //ToDo | Make util
-    private LocalDateTime htmlDate2LocalDateTime(String htmlInputData) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm");
-
-        return LocalDateTime.parse(htmlInputData, formatter);
     }
 
     private void validateDuration(MissionDTO missionDTO){

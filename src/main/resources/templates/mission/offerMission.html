@@ -1,23 +1,66 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
     <title>Offer Mission</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
 </head>
 <body>
-    <form action="/mission/offer" method="POST" th:object="${missionForm}">
-        <input type="hidden" name="id" th:value="${id}">
-        <input type="hidden" name="userLogin" th:value="${login}">
-        <ul>
-            <li th:each="activity : ${activities}">
-                <label >
-                    <input type="radio" th:field="*{activityId}" th:value="${activity.id}" th:text="${activity.name}">
-                </label>
-            </li>
-        </ul>
-        <input type="datetime-local" th:field="*{startTimeString}">
-        <input type="datetime-local" th:field="*{endTimeString}">
-        <input type="submit" th:value="'Offer'">
-    </form>
+    <header>
+        <div th:replace="~{fragments/header :: header}"></div>
+    </header>
+    <main class="container">
+        <div class="row justify-content-center">
+            <div class="col-6">
+                <div th:if="${error != null}"
+                     th:text="${error}"
+                     class="alert alert-danger my-3" role="alert"></div>
+
+                <div th:if="${activities.size() == 0}"
+                     th:text="'No active activities'"
+                     class="alert alert-danger my-3" role="alert"></div>
+
+                <div th:if="${activities.size() != 0}">
+                    <form action="/mission/offer" th:object="${missionForm}" method="POST">
+                    <div class="my-3">
+                        <label for="activity">Activity</label>
+                        <select class="form-select" id="activity" name="activityId">
+                            <option th:each="activity : ${activities}"
+                                    th:text="${activity.name} + ' | ' + ${activity.description}"
+                                    th:field="*{activityId}"
+                                    th:value="${activity.id}">
+                            </option>
+                        </select>
+                    </div>
+                    <div class="mb-2">
+                        <label for="startTime" class="form-label">Start time</label>
+                        <input th:field="*{startTimeString}"
+                               type="datetime-local" class="form-control" id="startTime">
+                    </div>
+                    <div th:if="${#fields.hasErrors('startTimeString')}">
+                        <div th:errors="*{startTimeString}" class="alert alert-danger my-3" role="alert" ></div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="endTime" class="form-label">End time</label>
+                        <input th:field="*{endTimeString}"
+                               type="datetime-local" class="form-control" id="endTime">
+                    </div>
+                    <div th:if="${#fields.hasErrors('endTimeString')}">
+                        <div th:errors="*{endTimeString}" class="alert alert-danger my-3" role="alert" ></div>
+                    </div>
+
+                    <div class="d-grid gap-2 mt-3">
+                        <button class="btn btn-dark" type="submit">Offer</button>
+                    </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </main>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0" crossorigin="anonymous"></script>
 </body>
 </html>
