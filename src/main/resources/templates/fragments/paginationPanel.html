@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<nav th:fragment="paginationPanel" class="my-3">
+    <ul class="pagination justify-content-center">
+        <th:block th:each="i : ${#numbers.sequence(0, activitiesPage.totalPages - 1)}">
+            <li class="page-item">
+                <a class="page-link text-dark" th:href="@{${url}(page=${i})}"
+                   th:text="${i + 1}"></a>
+            </li>
+        </th:block>
+    </ul>
+</nav>

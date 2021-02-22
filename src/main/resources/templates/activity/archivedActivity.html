@@ -22,16 +22,7 @@
             </div>
 
             <div th:if="${activitiesPage.totalPages > 0}">
-                <nav class="my-3">
-                    <ul class="pagination justify-content-center">
-                        <th:block th:each="i : ${#numbers.sequence(0, activitiesPage.totalPages - 1)}">
-                            <li class="page-item">
-                                <a class="page-link text-dark" href="/app/activity/active?cur_page=${i}"
-                                   th:text="${i +1}"></a>
-                            </li>
-                        </th:block>
-                    </ul>
-                </nav>
+                <nav th:replace="~{fragments/paginationPanel :: paginationPanel}"></nav>
 
                 <table class="table table-dark table-striped">
                     <thead>

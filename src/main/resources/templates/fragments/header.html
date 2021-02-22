@@ -24,7 +24,7 @@
                     <a class="btn btn-light btn-outline-dark" href="/login" th:text="#{nav.login}">></a>
                 </div>
                 <div class="col-auto" sec:authorize="isAuthenticated()">
-                    <a class="btn btn-dark" href="/profile" th:text="#{nav.profile}"></a>
+                    <a class="btn btn-dark" href="/user/profile" th:text="#{nav.profile}"></a>
                 </div>
                 <div class="col-auto" sec:authorize="isAuthenticated()">
                     <a class="btn btn-light" href="/logout" th:text="#{nav.logout}"></a>
