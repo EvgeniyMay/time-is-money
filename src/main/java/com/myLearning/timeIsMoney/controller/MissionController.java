@@ -4,6 +4,7 @@ import com.myLearning.timeIsMoney.dto.ActivityDTO;
 import com.myLearning.timeIsMoney.dto.MissionDTO;
 import com.myLearning.timeIsMoney.entity.UserDetailsImpl;
 import com.myLearning.timeIsMoney.enums.MissionState;
+import com.myLearning.timeIsMoney.enums.Role;
 import com.myLearning.timeIsMoney.exception.DurationLessThanZeroException;
 import com.myLearning.timeIsMoney.service.ActivityService;
 import com.myLearning.timeIsMoney.service.MissionService;
@@ -21,6 +22,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.Arrays;
 
 @Controller
 @RequestMapping("/mission")
@@ -133,9 +135,33 @@ public class MissionController {
         return "redirect:/user/profile";
     }
 
+    @PostMapping("/pass")
+    public String passMission(@RequestParam String missionId){
+        missionService.passMissionById(Long.parseLong(missionId));
 
-//    @ExceptionHandler(RuntimeException.class)
-//    public String handleObjectNotFoundException(RuntimeException e) {
-//        return "error/404";
-//    }
+        return "redirect:/user/profile";
+    }
+
+    @PostMapping("/cancel")
+    public String cancelMission(@RequestParam String missionId) {
+        missionService.deleteById(Long.parseLong(missionId));
+
+        return "redirect:/user/profile";
+    }
+
+    @PostMapping("/delete")
+    public String deleteMission(@RequestParam String missionId) {
+        missionService.deleteById(Long.parseLong(missionId));
+
+        return "redirect:/mission/offered";
+    }
+
+    @PostMapping("/accept")
+    public String acceptMission(@RequestParam String missionId) {
+        missionService.acceptById(Long.parseLong(missionId));
+
+        return "redirect:/mission/offered";
+    }
+
+
 }

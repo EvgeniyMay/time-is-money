@@ -7,6 +7,7 @@ import com.myLearning.timeIsMoney.entity.User;
 import com.myLearning.timeIsMoney.entity.UsersAndActivities;
 import com.myLearning.timeIsMoney.enums.MissionState;
 import com.myLearning.timeIsMoney.exception.DurationLessThanZeroException;
+import com.myLearning.timeIsMoney.exception.ObjectNotFoundException;
 import com.myLearning.timeIsMoney.repository.ActivityRepository;
 import com.myLearning.timeIsMoney.repository.MissionRepository;
 import com.myLearning.timeIsMoney.repository.UserRepository;
@@ -15,9 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class MissionService {
@@ -47,14 +46,6 @@ public class MissionService {
                 .endTime(LocalDateUtil.parseHtmlDate(missionDTO.getEndTimeString()))
                 .state(state)
                 .build();
-
-
-        // ToDo | Delete !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-        System.out.println(missionDTO.getUserId());
-        System.out.println(missionDTO.getActivityId());
-        System.out.println(missionDTO.getStartTimeString());
-        System.out.println(missionDTO.getEndTimeString());
-
         try {
             missionRepository.save(mission);
             return true;
@@ -70,14 +61,39 @@ public class MissionService {
                 .build();
     }
 
-    public boolean updateMissionState(Mission mission, MissionState state) {
-        mission.setState(state);
+    public boolean deleteById(Long id) {
+        try {
+            missionRepository.deleteById(id);
+            return true;
+        } catch (Exception e){
+            return false;
+        }
+    }
+
+    //ToDo | One query
+    @Transactional
+    public boolean acceptById(Long id) {
+        Mission mission = missionRepository.findById(id).orElseThrow(()-> new ObjectNotFoundException("Mission not found"));
+        mission.setState(MissionState.ACTIVE);
 
         try {
             missionRepository.save(mission);
             return true;
         } catch (Exception e) {
-            throw new RuntimeException();
+            return false;
+        }
+    }
+
+    //ToDo | One query
+    @Transactional
+    public boolean passMissionById(Long id) {
+        Mission mission = missionRepository.findById(id).orElseThrow(()-> new ObjectNotFoundException());
+        mission.setState(MissionState.PASSED);
+        try {
+            missionRepository.save(mission);
+            return true;
+        } catch (Exception e) {
+            return false;
         }
     }
 

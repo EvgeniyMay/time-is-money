@@ -57,9 +57,9 @@
                     </thead>
                     <tbody>
                         <tr th:each="mission : ${activeMissions}">
-                            <td>${mission.activity.name}</td>
-                            <td>${mission.startTime}</td>
-                            <td>${mission.endTime}</td>
+                            <td th:text="${mission.activity.name}"></td>
+                            <td th:text="${mission.startTime}"></td>
+                            <td th:text="${mission.endTime}"></td>
                             <td>
                                 <form class="no-padding" action="/mission/pass" method="POST">
                                 <input type="hidden" name="missionId" th:value="${mission.id}">
@@ -78,21 +78,21 @@
                             <form class="no-padding">
 <!--                                ToDo | Fix pagination-->
 <!--                                <input type="hidden" name="sort_field" value="${'activity_id'}">-->
-                                <input class="btn btn-dark" type="submit" value="${'Activity'}">
+                                <input class="btn btn-dark" type="submit" th:value="${'Activity'}">
                             </form>
                         </th>
                         <th>
                             <form class="no-padding">
 <!--                                ToDo | Fix pagination-->
 <!--                                <input type="hidden" name="sort_field" value="${'start_time'}">-->
-                                <input class="btn btn-dark" type="submit" value="${'Start Time'}">
+                                <input class="btn btn-dark" type="submit" th:value="${'Start Time'}">
                             </form>
                         </th>
                         <th>
                             <form class="no-padding">
 <!--                                ToDo | Fix pagination-->
 <!--                                <input type="hidden" name="sort_field" value="${'end_time'}">-->
-                                <input class="btn btn-dark" type="submit" value="${'End Time'}">
+                                <input class="btn btn-dark" type="submit" th:value="${'End Time'}">
                             </form>
                         </th>
                         <th></th>
@@ -100,12 +100,12 @@
                     </thead>
                     <tbody>
                         <tr th:each="mission : ${offeredMissions}">
-                            <td>${mission.activity.name}</td>
-                            <td>${mission.startTime}</td>
-                            <td>${mission.endTime}</td>
+                            <td th:text="${mission.activity.name}"></td>
+                            <td th:text="${mission.startTime}"></td>
+                            <td th:text="${mission.endTime}"></td>
                             <td>
-                                <form class="no-padding" action="/app/mission/cancel" method="POST">
-                                <input type="hidden" name="missionId" value="${mission.id}">
+                                <form class="no-padding" action="/mission/cancel" method="POST">
+                                <input type="hidden" name="missionId" th:value="${mission.id}">
                                 <input class="btn btn-light" type="submit" value="Cancel">
                                 </form>
                             </td>
@@ -121,30 +121,30 @@
                             <form class="no-padding">
 <!--                                ToDo | Fix pagination-->
 <!--                                <input type="hidden" name="sort_field" value="${'activity_id'}">-->
-                                <input class="btn btn-dark" type="submit" value="${'Activity'}">
+                                <input class="btn btn-dark" type="submit" th:value="${'Activity'}">
                             </form>
                         </th>
                         <th>
                             <form class="no-padding">
 <!--                                ToDo | Fix pagination-->
 <!--                                <input type="hidden" name="sort_field" value="${'start_time'}">-->
-                                <input class="btn btn-dark" type="submit" value="${'Start Time'}">
+                                <input class="btn btn-dark" type="submit" th:value="${'Start Time'}">
                             </form>
                         </th>
                         <th>
                             <form class="no-padding">
 <!--                                ToDo | Fix pagination-->
 <!--                                <input type="hidden" name="sort_field" value="${'end_time'}">-->
-                                <input class="btn btn-dark" type="submit" value="${'End Time'}">
+                                <input class="btn btn-dark" type="submit" th:value="${'End Time'}">
                             </form>
                         </th>
                     </tr>
                     </thead>
                     <tbody>
                         <tr th:each="mission : ${passedMissions}">
-                            <td>${mission.activity.name}</td>
-                            <td>${mission.startTime}</td>
-                            <td>${mission.endTime}</td>
+                            <td th:text="${mission.activity.name}"></td>
+                            <td th:text="${mission.startTime}"></td>
+                            <td th:text="${mission.endTime}"></td>
                         </tr>
                     </tbody>
                 </table>

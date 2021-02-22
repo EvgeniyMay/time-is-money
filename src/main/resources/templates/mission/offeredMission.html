@@ -72,13 +72,13 @@
                         <td th:text="${mission.endTime}"></td>
                         <td>
                             <form class="no-padding" action="/mission/accept" method="POST">
-                                <input type="hidden" name="missionId" value="${mission.id}">
+                                <input type="hidden" name="missionId" th:value="${mission.id}">
                                 <input class="btn btn-light" type="submit" value="Accept">
                             </form>
                         </td>
                         <td>
-                            <form class="no-padding" action="/mission/cancel" method="POST">
-                                <input type="hidden" name="missionId" value="${mission.id}">
+                            <form class="no-padding" action="/mission/delete" method="POST">
+                                <input type="hidden" name="missionId" th:value="${mission.id}">
                                 <input class="btn btn-light" type="submit" value="Deny">
                             </form>
                         </td>
