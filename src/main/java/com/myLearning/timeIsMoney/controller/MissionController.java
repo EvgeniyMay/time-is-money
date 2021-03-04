@@ -23,13 +23,11 @@ import javax.validation.Valid;
 public class MissionController {
 
     private final MissionService missionService;
-    private final UserService userService;
     private final ActivityService activityService;
 
     @Autowired
-    public MissionController(MissionService missionService, UserService userService, ActivityService activityService) {
+    public MissionController(MissionService missionService, ActivityService activityService) {
         this.missionService = missionService;
-        this.userService = userService;
         this.activityService = activityService;
     }
 
