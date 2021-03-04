@@ -54,6 +54,7 @@ public class MissionService {
         }
     }
 
+    @Transactional
     public UsersAndActivities getUsersAndActivities() {
         return UsersAndActivities.builder()
                 .users(userRepository.findAll())
@@ -70,31 +71,23 @@ public class MissionService {
         }
     }
 
-    //ToDo | One query
-    @Transactional
+
     public boolean acceptById(Long id) {
-        Mission mission = missionRepository.findById(id).orElseThrow(()-> new ObjectNotFoundException("Mission not found"));
+        Mission mission = missionRepository.findById(id)
+                .orElseThrow(()-> new ObjectNotFoundException(
+                        "Mission with id " + id + " not found"));
         mission.setState(MissionState.ACTIVE);
 
-        try {
-            missionRepository.save(mission);
-            return true;
-        } catch (Exception e) {
-            return false;
-        }
+        return true;
     }
 
-    //ToDo | One query
-    @Transactional
     public boolean passMissionById(Long id) {
-        Mission mission = missionRepository.findById(id).orElseThrow(()-> new ObjectNotFoundException());
+        Mission mission = missionRepository.findById(id)
+                .orElseThrow(()-> new ObjectNotFoundException(
+                        "Mission with id " + id + " not found"));
         mission.setState(MissionState.PASSED);
-        try {
-            missionRepository.save(mission);
-            return true;
-        } catch (Exception e) {
-            return false;
-        }
+
+        return true;
     }
 
     private void validateDuration(MissionDTO missionDTO){
