@@ -127,7 +127,7 @@ public class MissionController {
 
     @PostMapping("/pass")
     public String passMission(@RequestParam String missionId){
-        missionService.passMissionById(Long.parseLong(missionId));
+        missionService.changeStateById(Long.parseLong(missionId), MissionState.PASSED);
 
         return "redirect:/user/profile";
     }
@@ -148,7 +148,7 @@ public class MissionController {
 
     @PostMapping("/accept")
     public String acceptMission(@RequestParam String missionId) {
-        missionService.acceptById(Long.parseLong(missionId));
+        missionService.changeStateById(Long.parseLong(missionId), MissionState.ACTIVE);
 
         return "redirect:/mission/offered";
     }
