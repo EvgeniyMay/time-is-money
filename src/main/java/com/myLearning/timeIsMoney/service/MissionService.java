@@ -73,12 +73,10 @@ public class MissionService {
 
 
     public boolean changeStateById(Long id, MissionState state) {
-        Mission mission = missionRepository.findById(id)
+        missionRepository.findById(id)
                 .orElseThrow(()-> new ObjectNotFoundException(
-                        "Mission with id " + id + " not found"));
-
-        mission.setState(state);
-
+                        "Mission with id " + id + " not found"))
+                .setState(state);
         return true;
     }
 
