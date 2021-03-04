@@ -35,8 +35,8 @@ public class UserController {
 
     @GetMapping("/profile")
     public String getProfilePage(Model model) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        User user = userService.getByLogin(authentication.getName());
+        User user = getUserFromContext();
+
         model.addAttribute("user", user);
 
         model.addAttribute("activeMissions",
@@ -55,5 +55,11 @@ public class UserController {
         return missions.stream()
                 .filter(m -> state.equals(m.getState()))
                 .collect(Collectors.toList());
+    }
+
+    private User getUserFromContext() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        return userService.getByLogin(authentication.getName());
     }
 }
