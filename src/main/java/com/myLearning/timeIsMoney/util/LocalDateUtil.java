@@ -10,5 +10,4 @@ public class LocalDateUtil {
 
         return LocalDateTime.parse(htmlInputData, formatter);
     }
-
 }

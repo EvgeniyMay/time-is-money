@@ -41,11 +41,6 @@ public class UserService {
         }
     }
 
-    public User getById(Long userId) {
-        return userRepository.findById(userId)
-                .orElseThrow(()->new UserNotFountException("User with id " + userId + " not found"));
-    }
-
     public User getByLogin(String login) {
         return userRepository.findByLogin(login)
                 .orElseThrow(()->new UserNotFountException("User with login " + login + " not found"));
