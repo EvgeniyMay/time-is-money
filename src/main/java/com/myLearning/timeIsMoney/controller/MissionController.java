@@ -79,6 +79,7 @@ public class MissionController {
 
         if(bindingResult.hasErrors()) {
             model.addAttribute("missionForm", missionService.createDTO());
+            model.addAttribute("error", "Please fill all fields");
             return "mission/createMission";
         }
 
