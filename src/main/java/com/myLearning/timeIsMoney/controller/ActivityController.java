@@ -50,6 +50,7 @@ public class ActivityController {
 
         return "activity/createActivity";
     }
+
     @PostMapping("/add")
     public String createActivity(@ModelAttribute("activityForm") @Valid ActivityDTO activityDTO,
                                  BindingResult bindingResult,
@@ -76,6 +77,7 @@ public class ActivityController {
 
         return "activity/editActivity";
     }
+
     @PostMapping("/edit")
     public String editActivity(@ModelAttribute("activity") Activity activity,
                                Model model) {

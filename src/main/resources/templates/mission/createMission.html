@@ -20,16 +20,16 @@
                      th:text="${error}"
                      class="alert alert-danger my-3" role="alert"></div>
 
-                <div th:if="${usersAndActivities.activities.size() == 0}"
+                <div th:if="${missionForm.ableActivities.size() == 0}"
                      th:text="'No active activities'"
                      class="alert alert-danger my-3" role="alert"></div>
 
-                <div th:if="${usersAndActivities.activities.size() != 0}">
+                <div th:if="${missionForm.ableActivities.size() != 0}">
                     <form ction="/mission/create" th:object="${missionForm}" method="POST">
                         <div class="my-3">
                             <label for="user">User</label>
                             <select class="form-select" id="user" name="userId">
-                                <option th:each="user : ${usersAndActivities.users}"
+                                <option th:each="user : ${missionForm.ableUsers}"
                                         th:text="${user.login}"
                                         th:field="*{userId}"
                                         th:value="${user.id}">
@@ -40,7 +40,7 @@
                         <div class="my-3">
                             <label for="activity">Activity</label>
                             <select class="form-select" id="activity" name="activityId">
-                                <option th:each="activity : ${usersAndActivities.activities}"
+                                <option th:each="activity : ${missionForm.ableActivities}"
                                         th:text="${activity.name} + ' | ' + ${activity.description}"
                                         th:field="*{activityId}"
                                         th:value="${activity.id}">

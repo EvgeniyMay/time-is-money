@@ -4,7 +4,6 @@ import com.myLearning.timeIsMoney.dto.MissionDTO;
 import com.myLearning.timeIsMoney.entity.Activity;
 import com.myLearning.timeIsMoney.entity.Mission;
 import com.myLearning.timeIsMoney.entity.User;
-import com.myLearning.timeIsMoney.entity.UsersAndActivities;
 import com.myLearning.timeIsMoney.enums.MissionState;
 import com.myLearning.timeIsMoney.exception.DurationLessThanZeroException;
 import com.myLearning.timeIsMoney.exception.ObjectNotFoundException;
@@ -55,10 +54,10 @@ public class MissionService {
     }
 
     @Transactional
-    public UsersAndActivities getUsersAndActivities() {
-        return UsersAndActivities.builder()
-                .users(userRepository.findAll())
-                .activities(activityRepository.findActivitiesByIsArchivedIsFalse())
+    public MissionDTO createDTO() {
+        return MissionDTO.builder()
+                .ableActivities(activityRepository.findActivitiesByIsArchivedIsFalse())
+                .ableUsers(userRepository.findAll())
                 .build();
     }
 

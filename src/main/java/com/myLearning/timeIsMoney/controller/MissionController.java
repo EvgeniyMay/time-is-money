@@ -6,7 +6,6 @@ import com.myLearning.timeIsMoney.enums.MissionState;
 import com.myLearning.timeIsMoney.exception.DurationLessThanZeroException;
 import com.myLearning.timeIsMoney.service.ActivityService;
 import com.myLearning.timeIsMoney.service.MissionService;
-import com.myLearning.timeIsMoney.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -35,7 +34,8 @@ public class MissionController {
     public String getActiveMissionsPage(Model model,
                                         @PageableDefault(sort = {"id"}, size = 7)
                                         Pageable pageable) {
-        model.addAttribute("missionsPage", missionService.getPageableByState(MissionState.ACTIVE, pageable));
+        model.addAttribute("missionsPage",
+                missionService.getPageableByState(MissionState.ACTIVE, pageable));
 
         return "mission/activeMission";
     }
@@ -51,7 +51,8 @@ public class MissionController {
     public String getPassedMissionsPage(Model model,
                                         @PageableDefault(sort = {"id"}, size = 7)
                                         Pageable pageable) {
-        model.addAttribute("missionsPage", missionService.getPageableByState(MissionState.PASSED, pageable));
+        model.addAttribute("missionsPage",
+                missionService.getPageableByState(MissionState.PASSED, pageable));
 
         return "mission/passedMission";
     }
@@ -59,15 +60,15 @@ public class MissionController {
     public String getOfferedMissionsPage(Model model,
                                         @PageableDefault(sort = {"id"}, size = 7)
                                         Pageable pageable) {
-        model.addAttribute("missionsPage", missionService.getPageableByState(MissionState.OFFERED, pageable));
+        model.addAttribute("missionsPage",
+                missionService.getPageableByState(MissionState.OFFERED, pageable));
 
         return "mission/offeredMission";
     }
 
     @GetMapping("/create")
     public String getCreateMissionPage(Model model) {
-        model.addAttribute("missionForm", new MissionDTO());
-        model.addAttribute("usersAndActivities", missionService.getUsersAndActivities());
+        model.addAttribute("missionForm", missionService.createDTO());
 
         return "mission/createMission";
     }
@@ -77,15 +78,14 @@ public class MissionController {
                                 Model model) {
 
         if(bindingResult.hasErrors()) {
-            model.addAttribute("usersAndActivities", missionService.getUsersAndActivities());
+            model.addAttribute("missionForm", missionService.createDTO());
             return "mission/createMission";
         }
 
         try {
             missionService.createMission(missionDTO, MissionState.ACTIVE);
         } catch (DurationLessThanZeroException e) {
-            model.addAttribute("missionForm", new MissionDTO());
-            model.addAttribute("usersAndActivities", missionService.getUsersAndActivities());
+            model.addAttribute("missionForm", missionService.createDTO());
             model.addAttribute("error", "Duration can't be less than zero");
 
             return "mission/createMission";
