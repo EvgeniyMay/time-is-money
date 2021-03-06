@@ -105,6 +105,7 @@ public class MissionController {
                                Model model) {
         if(bindingResult.hasErrors()) {
             model.addAttribute("missionForm", missionService.createDTO());
+            model.addAttribute("error", "Please fill all fields");
 
             return "mission/offerMission";
         }
@@ -114,8 +115,7 @@ public class MissionController {
         try {
             missionService.createMission(missionDTO, MissionState.OFFERED);
         } catch (DurationLessThanZeroException e) {
-            model.addAttribute("activities", activityService.getActive());
-            model.addAttribute("missionForm", new MissionDTO());
+            model.addAttribute("missionForm", missionService.createDTO());
             model.addAttribute("error", "Duration can't be less than zero");
 
             return "mission/offerMission";
