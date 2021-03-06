@@ -30,7 +30,8 @@ public class ActivityController {
     public String getActiveActivityPage(Model model,
                                        @PageableDefault(sort = {"name"}, size = 7)
                                        Pageable pageable) {
-        model.addAttribute("activitiesPage", activityService.getPageAbleByStatue(true, pageable));
+        model.addAttribute("activitiesPage",
+                activityService.getPageAbleByStatue(true, pageable));
 
         return "activity/activeActivity";
     }
@@ -39,7 +40,8 @@ public class ActivityController {
     public String getArchivedActivityPage(Model model,
                                        @PageableDefault(sort = {"name"}, size = 7)
                                        Pageable pageable) {
-        model.addAttribute("activitiesPage", activityService.getPageAbleByStatue(false, pageable));
+        model.addAttribute("activitiesPage",
+                activityService.getPageAbleByStatue(false, pageable));
 
         return "activity/archivedActivity";
     }
@@ -84,7 +86,7 @@ public class ActivityController {
         try {
             activityService.update(activity);
         } catch (Exception e) {
-            model.addAttribute("error", "Such activity exists");
+            model.addAttribute("error", "Something went wrong");
             model.addAttribute("activity", activity);
         }
 

@@ -45,7 +45,8 @@ public class AuthorizationController {
     public String getLoginPage(@RequestParam(name = "error", defaultValue = "false") boolean loginError,
                                Model model) {
         if(loginError) {
-            model.addAttribute("errorMessage", "{login.input.error.data-password}");
+            model.addAttribute("errorMessage",
+                    "{login.input.error.data-password}");
         }
 
         return "authorization/login";

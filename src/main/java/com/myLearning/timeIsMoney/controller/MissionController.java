@@ -76,7 +76,6 @@ public class MissionController {
     public String createMission(@ModelAttribute("missionForm") @Valid MissionDTO missionDTO,
                                 BindingResult bindingResult,
                                 Model model) {
-
         if(bindingResult.hasErrors()) {
             model.addAttribute("missionForm", missionService.createDTO());
             model.addAttribute("error", "Please fill all fields");
@@ -96,8 +95,7 @@ public class MissionController {
 
     @GetMapping("/offer")
     public String getOfferMissionPage(Model model) {
-        model.addAttribute("activities", activityService.getActive());
-        model.addAttribute("missionForm", new MissionDTO());
+        model.addAttribute("missionForm", missionService.createDTO());
 
         return "mission/offerMission";
     }
@@ -106,7 +104,7 @@ public class MissionController {
                                BindingResult bindingResult,
                                Model model) {
         if(bindingResult.hasErrors()) {
-            model.addAttribute("activities", activityService.getActive());
+            model.addAttribute("missionForm", missionService.createDTO());
 
             return "mission/offerMission";
         }

@@ -18,16 +18,16 @@
                      th:text="${error}"
                      class="alert alert-danger my-3" role="alert"></div>
 
-                <div th:if="${activities.size() == 0}"
+                <div th:if="${missionForm.ableActivities.size() == 0}"
                      th:text="'No active activities'"
                      class="alert alert-danger my-3" role="alert"></div>
 
-                <div th:if="${activities.size() != 0}">
+                <div th:if="${missionForm.ableActivities.size() != 0}">
                     <form action="/mission/offer" th:object="${missionForm}" method="POST">
                         <div class="my-3">
                             <label for="activity">Activity</label>
                             <select class="form-select" id="activity" name="activityId">
-                                <option th:each="activity : ${activities}"
+                                <option th:each="activity : ${missionForm.ableActivities}"
                                         th:text="${activity.name} + ' | ' + ${activity.description}"
                                         th:field="*{activityId}"
                                         th:value="${activity.id}">

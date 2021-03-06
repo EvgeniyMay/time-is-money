@@ -25,7 +25,7 @@
                      class="alert alert-danger my-3" role="alert"></div>
 
                 <div th:if="${missionForm.ableActivities.size() != 0}">
-                    <form ction="/mission/create" th:object="${missionForm}" method="POST">
+                    <form action="/mission/create" th:object="${missionForm}" method="POST">
                         <div class="my-3">
                             <label for="user">User</label>
                             <select class="form-select" id="user" name="userId">
@@ -63,7 +63,6 @@
                         <div th:if="${#fields.hasErrors('endTimeString')}">
                             <div th:errors="*{endTimeString}" class="alert alert-danger my-3" role="alert" ></div>
                         </div>
-
 
                             <div class="d-grid gap-2 mt-3">
                             <button class="btn btn-dark" type="submit">Create</button>
